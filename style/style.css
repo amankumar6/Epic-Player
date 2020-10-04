@@ -34,11 +34,6 @@ html {
 
 .main_div {
     width: 100vw;
-    background-image: url('32.-Banana-Mania.jpg');
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
 }
 
 .header {

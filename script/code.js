@@ -207,14 +207,21 @@ const loadSong = (songList) => {
     artist.textContent = songList.artist;
     music.src = "src/music/" + songList.name + ".mp3";
     img.src = "src/image/" + songList.name + ".jpg";
+    music.crossOrigin = "anonymous";
     music.volume = volumeSlider.value;
+    audioctx.resume()
+    window.requestAnimationFrame(draw);
 };
 
 const prevSong = () => {
     songIndex = (songIndex - 1 + songList.length) % songList.length;
     remove_all_active_list();
     musiclistitem[songIndex].classList.add("active_music");
-    musiclistitem[songIndex].scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
+    musiclistitem[songIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest"
+    });
     loadSong(songList[songIndex]);
     playmusic(songIndex);
 };
@@ -223,7 +230,11 @@ const nextSong = () => {
     songIndex = (songIndex + 1) % songList.length;
     remove_all_active_list();
     musiclistitem[songIndex].classList.add("active_music");
-    musiclistitem[songIndex].scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
+    musiclistitem[songIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest"
+    });
     loadSong(songList[songIndex]);
     playmusic(songIndex);
 };
@@ -305,3 +316,68 @@ volume.addEventListener('click', () => {
     ismute ? volumeup() : volumedown();
     volumecheck();
 });
+
+let canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, windowWidth, windowHeight, bigBars = 0,
+    WIDTH = 1024,
+    HEIGHT = 350,
+    INTERVAL = 128,
+    SAMPLES = 2048,
+    r = 0,
+    g = 0,
+    b = 255,
+    x = 0;
+
+window.addEventListener('load', () => {
+    canvas = document.getElementById("cnv1");
+    context = canvas.getContext("2d");
+    audioctx = new AudioContext();
+    
+    analyser = audioctx.createAnalyser();
+    analyser.fftSize = SAMPLES;
+    oscillator = audioctx.createOscillator();
+    oscillator.connect(audioctx.destination);
+    source = audioctx.createMediaElementSource(music);
+    source.connect(analyser);
+    source.connect(audioctx.destination);
+    freqArr = new Uint8Array(analyser.frequencyBinCount);
+    barHeight = HEIGHT;
+    window.requestAnimationFrame(draw);
+});
+
+function draw() {
+    if (!music.paused) {
+        bigBars = 0;
+        r = 0;
+        g = 0;
+        b = 255;
+        x = 0;
+        context.clearRect(0, 0, WIDTH, HEIGHT);
+        analyser.getByteFrequencyData(freqArr);
+        for (var i = 0; i < INTERVAL; i++) {
+            if (barHeight >= (240)) {
+                bigBars++;
+            }
+            let num = i;
+            barHeight = ((freqArr[num] - 128) * 2) + 2;
+            if (barHeight <= 1) {
+                barHeight = 2;
+            }
+            r = r + 10;
+            if (r > 255) {
+                r = 255;
+            }
+            g = g + 1;
+            if (g > 255) {
+                g = 255;
+            }
+            b = b - 2;
+            if (b < 0) {
+                b = 0;
+            }
+            context.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+            context.fillRect(x, HEIGHT - barHeight, (WIDTH / INTERVAL) - 1, barHeight);
+            x = x + (WIDTH / INTERVAL);
+        }
+    }
+    window.requestAnimationFrame(draw);
+}
