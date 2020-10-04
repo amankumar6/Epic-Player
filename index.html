@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"> -->
+    <link rel="stylesheet" href="../../fontawesome-free-5.14.0-web/css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    <link rel="icon" href="src/icon.png" type="image/x-icon">
+    <title>Epic Player</title>
+</head>
+
+<body>
+    <div id="loading"></div>
+
+    <div class="main_div">
+        <div class="header">
+            <i class="fas fa-play header-icon" title="Epic Player"></i>
+            <a href="#">Epic Player</a>
+        </div>
+        <div class="music_list ">
+        </div>
+        <div class="music_container ">
+            <div class="music_img col-3">
+                <div class="img_container">
+                    <img src="src/image/Alone.jpg" alt="" class="music_img_change">
+                </div>
+                <div class="music_name">
+                    <h2 id="title">Alone</h2>
+                    <h3 id="artist">Alan Walker</h3>
+                </div>
+            </div>
+
+            <div class="all_controls col-6">
+                <div class="music_controls">
+                    <i class="fas fa-backward" id="prev" title="Previous"></i>
+                    <i class="fas fa-play main_button" id="play" title="Play"></i>
+                    <i class="fas fa-forward" id="next" title="Next"></i>
+                </div>
+                <div class="progressbar_container">
+                    <div class="progress_duration_meter">
+                        <div class="current_time"> 0:00 </div>
+                        <div class="total_duration"> 2:43 </div>
+                    </div>
+
+                    <div class="progress_div">
+                        <div class="progress_bar">
+                            <!--
+                                <div class="progress_circle"></div>
+                            -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="volume_control col-2 offset-md-1">
+                <i class="fas fa-volume-up" id="volume" title="Volume"></i>
+                <input class="volume_slider" type="range" min="0" max="1" step="0.01" value="1"
+                    />
+            </div>
+
+            <audio src="src/music/Alone.mp3"></audio>
+
+        </div>
+    </div>
+    <script type="text/javascript" src="script/code.js"></script>
+</body>
+
+</html>
