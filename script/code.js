@@ -104,8 +104,10 @@ let songIndex = 0;
 let volumeSlider = document.querySelector('.volume_slider');
 let tempslidervalue = volumeSlider.value;
 let before_loadtime = new Date().getTime();
-
+console.log('code starts here')
 window.addEventListener('load', () => {
+    console.log('WINDOW LOADS')
+    console.log('loader start')
     let after_loadtime = new Date().getTime();
     let page_loadtime = (after_loadtime - before_loadtime) / 1000;
     if (page_loadtime >= 3) {
@@ -115,12 +117,16 @@ window.addEventListener('load', () => {
             loader.style.display = 'none';
         }, 000);
     }
+    console.log('loader completed')
 });
 
 window.addEventListener('keydown', function (e) {
+    console.log('preventDefault space start');
     if (e.keyCode == 32 && e.target == document.body) {
         e.preventDefault();
+        console.log('preventDefault Space done');
     }
+    console.log('preventDefault space completed');
 });
 
 musiclist.innerHTML = (songList.map(function (song, songIndex) {
@@ -138,82 +144,107 @@ musiclist.innerHTML = (songList.map(function (song, songIndex) {
 const musiclistitem = document.querySelectorAll(".music_list_item");
 for (let i = 0; i < musiclistitem.length; i++) {
     musiclistitem[i].addEventListener("click", function () {
+        console.log('musiclistitem Listener start');
         remove_all_active_list();
+        audioctx.resume()
         loadSong(songList[i]);
         playmusic(i);
         musiclistitem[i].classList.add("active_music");
         songIndex = i;
+        console.log('musiclistitem Listener completed');
     });
 };
 
 function remove_all_active_list() {
     for (let i = 0; i < musiclistitem.length; i++) {
+        console.log('remove_all_active_list start');
         musiclistitem[i].classList.remove("active_music");
+        console.log('remove_all_active_list completed');
     };
 };
 
 const playmusic = (e) => {
-    remove_all_active_list();
+    console.log('playmusic start');
+    //remove_all_active_list();
     musiclistitem[e].classList.add("active_music");
     isPlay = true;
     music.play();
     play.classList.replace('fa-play', 'fa-pause');
+    console.log('playmusic compelete');
 };
 
 const pausemusic = () => {
+    console.log('pause start');
     isPlay = false;
     music.pause();
     play.classList.replace('fa-pause', 'fa-play');
+    console.log('pause compelete');
 };
 
 document.body.onkeyup = function (e) {
+    console.log('window onkeyup start');
     if (e.keyCode == 32) {
         if (isPlay) {
             event.stopPropagation();
             pausemusic();
+            console.log('window onkeyup = space used for pause');
+            audioctx.resume()
         } else {
             event.stopPropagation();
             playmusic(songIndex);
+            console.log('window onkeyup = space used for play');
+            audioctx.resume()
         }
     } else if (e.keyCode == 39) {
         if (isPlay) {
             music.currentTime += 5;
+            console.log('window onkeyup = +5sec');
         } else {
             music.currentTime += 5;
+            console.log('window onkeyup = +5sec');
         }
 
     } else if (e.keyCode == 37) {
         if (isPlay) {
             music.currentTime -= 5;
+            console.log('window onkeyup = -5sec');
         } else {
             music.currentTime -= 5;
+            console.log('window onkeyup = -5sec');
         }
-
     }
+    console.log('window onkeyup start');
 };
 
 play.addEventListener('click', () => {
+    console.log('playpausemusic on click start');
     isPlay ? pausemusic() : playmusic(songIndex);
+    audioctx.resume()
+    console.log('playpausemusic on click compelete');
 });
 
 headericon.addEventListener('click', () => {
+    //debugger;
+    console.log('playmusic head on click start');
     if (!isPlay) {
         playmusic(songIndex);
+        console.log('playmusic head on click done');
     }
+    console.log('playmusic head on click complete');
 });
 
 const loadSong = (songList) => {
+    console.log('loadsong start');
     title.textContent = songList.title;
     artist.textContent = songList.artist;
     music.src = "src/music/" + songList.name + ".mp3";
     img.src = "src/image/" + songList.name + ".jpg";
-    music.crossOrigin = "anonymous";
     music.volume = volumeSlider.value;
-    audioctx.resume()
-    window.requestAnimationFrame(draw);
+    console.log('loadsong compelete');
 };
 
 const prevSong = () => {
+    console.log('prevsong button start');
     songIndex = (songIndex - 1 + songList.length) % songList.length;
     remove_all_active_list();
     musiclistitem[songIndex].classList.add("active_music");
@@ -224,9 +255,11 @@ const prevSong = () => {
     });
     loadSong(songList[songIndex]);
     playmusic(songIndex);
+    console.log('prevsong button compelete');
 };
 
 const nextSong = () => {
+    console.log('nextsong button start');
     songIndex = (songIndex + 1) % songList.length;
     remove_all_active_list();
     musiclistitem[songIndex].classList.add("active_music");
@@ -237,6 +270,7 @@ const nextSong = () => {
     });
     loadSong(songList[songIndex]);
     playmusic(songIndex);
+    console.log('nextsong button compelete');
 };
 
 prev.addEventListener('click', prevSong);
@@ -247,10 +281,10 @@ const progress_circle = document.querySelector('.progress_circle');
 music.addEventListener("timeupdate", () => {
     let position = music.currentTime / music.duration;
     progress.style.width = position * 100 + "%";
-    //progress_circle.style.marginLeft = position * 100 + "%";
     convertTime(Math.round(music.currentTime));
     if (music.ended) {
         nextSong();
+        console.log('music ended nextsong done');
     }
 });
 
@@ -272,44 +306,54 @@ function totalTime(seconds) {
 };
 
 progress_div.addEventListener('click', (event) => {
+    console.log('proggress start');
     let move_progress = (event.offsetX / event.srcElement.clientWidth) * music.duration;
     music.currentTime = move_progress;
+    console.log('proggress compelete');
 });
 
 function volumecheck() {
-    if (music.volume > 0.35) {
+    if (music.volume > 0.45) {
         volumeup();
     }
     if (music.volume == 0) {
         volumedown();
     }
-    if (music.volume <= 0.35 && music.volume > 0) {
+    if (music.volume <= 0.45 && music.volume > 0) {
         volumelow();
     }
 }
 volumeSlider.addEventListener('change', () => {
+    console.log('volumeSlider start');
     music.volume = volumeSlider.value;
     tempslidervalue = volumeSlider.value;
     volumecheck();
+    console.log('volumeSlider compelete');
 })
 
 const volumedown = () => {
+    console.log('volumeDown start');
     ismute = true;
     volume.classList.replace('fa-volume-down', 'fa-volume-mute');
     volume.classList.replace('fa-volume-up', 'fa-volume-mute');
     music.volume = 0;
     volumeSlider.value = 0;
+    console.log('volumeDown compelete');
 };
 const volumelow = () => {
+    console.log('volumeLOw start');
     volume.classList.replace('fa-volume-mute', 'fa-volume-down');
     volume.classList.replace('fa-volume-up', 'fa-volume-down');
+    console.log('volumeLOw compelete');
 }
 const volumeup = () => {
+    console.log('volumeUP start');
     ismute = false;
     volume.classList.replace('fa-volume-down', 'fa-volume-up');
     volume.classList.replace('fa-volume-mute', 'fa-volume-up');
     volumeSlider.value = tempslidervalue;
     music.volume = volumeSlider.value;
+    console.log('volumeUP compelete');
 };
 
 volume.addEventListener('click', () => {
@@ -317,9 +361,7 @@ volume.addEventListener('click', () => {
     volumecheck();
 });
 
-let canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, windowWidth, windowHeight, bigBars = 0,
-    WIDTH = 1024,
-    HEIGHT = 350,
+let canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, WIDTH, HEIGHT, bigBars = 0,
     INTERVAL = 128,
     SAMPLES = 2048,
     r = 0,
@@ -328,10 +370,14 @@ let canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source,
     x = 0;
 
 window.addEventListener('load', () => {
+    console.log('vusializer start')
     canvas = document.getElementById("cnv1");
     context = canvas.getContext("2d");
     audioctx = new AudioContext();
-    
+    WIDTH = window.innerWidth - 50;
+    canvas.width = WIDTH - 50;
+    HEIGHT = 500;
+    canvas.height = 500;
     analyser = audioctx.createAnalyser();
     analyser.fftSize = SAMPLES;
     oscillator = audioctx.createOscillator();
@@ -342,6 +388,7 @@ window.addEventListener('load', () => {
     freqArr = new Uint8Array(analyser.frequencyBinCount);
     barHeight = HEIGHT;
     window.requestAnimationFrame(draw);
+    console.log('vusializer compelete')
 });
 
 function draw() {
@@ -358,7 +405,7 @@ function draw() {
                 bigBars++;
             }
             let num = i;
-            barHeight = ((freqArr[num] - 128) * 2) + 2;
+            barHeight = ((freqArr[num] - 128) * 3) + 2;
             if (barHeight <= 1) {
                 barHeight = 2;
             }

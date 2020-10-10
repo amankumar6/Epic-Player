@@ -21,7 +21,11 @@
 html {
     font-size: 62.5%;
     font-family: 'Roboto', sans-serif;
-    overflow: hidden
+    overflow: hidden;
+}
+
+body {
+    background-color: black;
 }
 
 #loading {
@@ -30,6 +34,18 @@ html {
     height: 100vh;
     background: white url('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/6d391369321565.5b7d0d570e829.gif') no-repeat center center;
     z-index: 1;
+}
+
+.visualizer_main {
+    width: max-content;
+    margin: auto;
+}
+
+.visualizer {
+    position: fixed;
+    left: 5rem;
+    bottom: 10vh;
+    z-index: -1;
 }
 
 .main_div {
@@ -78,9 +94,8 @@ html {
 }
 
 .music_list {
-    background-color: rgb(24, 24, 24);
+    background-color: transparent;
     color: white;
-    /*padding-bottom: 9rem;*/
     height: 78vh;
     overflow-y: scroll;
 }
@@ -273,24 +288,6 @@ img {
     -webkit-animation: none;
     appearance: none;
 }
-
-/*
-.progress_circle {
-    position: absolute;
-    top: -7px;
-    left: 0;
-    width: 2rem;
-    height: 2rem;
-    background-color: green;
-    border-radius: 50%;
-    transition: width 100ms linear;
-    -moz-transition: width 100ms linear;
-    -o-transition: width 100ms linear;
-    -webkit-transition: width 100ms linear;
-    cursor: pointer;
-    -webkit-animation: none;
-    appearance: none;
-}*/
 
 .volume_control {
     width: 16rem;

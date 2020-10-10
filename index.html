@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"> -->
-    <link rel="stylesheet" href="../../fontawesome-free-5.14.0-web/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -25,6 +24,9 @@
 
 <body>
     <div id="loading"></div>
+    <div class="visualizer_main">
+        <canvas class="visualizer" id="cnv1"></canvas>
+    </div>
 
     <div class="main_div">
         <div class="header">
@@ -57,26 +59,21 @@
                     </div>
 
                     <div class="progress_div">
-                        <div class="progress_bar">
-                            <!--
-                                <div class="progress_circle"></div>
-                            -->
-                        </div>
+                        <div class="progress_bar"></div>
                     </div>
 
                 </div>
             </div>
             <div class="volume_control col-2 offset-md-1">
                 <i class="fas fa-volume-up" id="volume" title="Volume"></i>
-                <input class="volume_slider" type="range" min="0" max="1" step="0.01" value="1"
-                    />
+                <input class="volume_slider" type="range" min="0" max="1" step="0.01" value="1" />
             </div>
 
-            <audio src="src/music/Alone.mp3"></audio>
+            <audio src="src/music/Alone.mp3" crossorigin="anonymous"></audio>
 
         </div>
     </div>
-    <canvas class="visualizer" id="cnv1" width="1024" height="350"></canvas>
+
     <script type="text/javascript" src="script/code.js"></script>
 </body>
 
