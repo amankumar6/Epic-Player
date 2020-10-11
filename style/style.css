@@ -5,7 +5,7 @@
 }
 
 ::-webkit-scrollbar {
-    width: 1rem;
+    width: 1.2rem;
 }
 
 ::-webkit-scrollbar-track {
@@ -14,7 +14,6 @@
 
 ::-webkit-scrollbar-thumb {
     background-color: #3EECAC;
-    background-image: linear-gradient(19deg, #3EECAC 0%, #EE74E1 100%);
     border-radius: 1rem;
 }
 
@@ -67,9 +66,9 @@ body {
 .header .header-icon {
     width: 4.5rem;
     height: 4.5rem;
-    border-radius: 1rem;
-    border: 2px solid white;
-    color: #1DB954;
+    border-radius: 50%;
+    background-color: #1DB954;
+    color: black;
     font-size: 2.4rem;
     padding-left: 0.4rem;
     display: flex;
@@ -80,7 +79,7 @@ body {
 }
 
 .header .header-icon:hover {
-    color: red;
+    color: rgb(231, 231, 231);
 }
 
 .header a {
@@ -109,7 +108,8 @@ body {
 }
 
 .music_list .music_list_item:hover {
-    background-color: rgb(40, 40, 40);
+    color: #1DB954;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .music_list .music_list_item .img_container_list img {
@@ -310,9 +310,9 @@ img {
 }
 
 input[type=range] {
-    height: 19px;
+    height: 1.9rem;
     -webkit-appearance: none;
-    margin: 10px 0;
+    margin: 1rem 0;
 }
 
 input[type=range]:focus {
@@ -321,21 +321,21 @@ input[type=range]:focus {
 
 input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 5px;
+    height: 0.5rem;
     cursor: pointer;
     animate: 0.2s;
     background: #1DB954;
-    border-radius: 5px;
+    border-radius: 0.5rem;
 }
 
 input[type=range]::-webkit-slider-thumb {
-    height: 13px;
-    width: 13px;
-    border-radius: 50px;
+    height: 1.3rem;
+    width: 1.3rem;
+    border-radius: 5rem;
     background: #FFFFFF;
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top: -4px;
+    margin-top: -0.4rem;
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
@@ -343,23 +343,23 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 input[type=range]::-moz-range-track {
-    height: 5px;
+    height: 0.5rem;
     cursor: pointer;
     animate: 0.2s;
     background: #1DB954;
-    border-radius: 5px;
+    border-radius: 0.5rem;
 }
 
 input[type=range]::-moz-range-thumb {
-    height: 13px;
-    width: 13px;
-    border-radius: 50px;
+    height: 1.3rem;
+    width: 1.3rem;
+    border-radius: 5rem;
     background: #FFFFFF;
     cursor: pointer;
 }
 
 input[type=range]::-ms-track {
-    height: 5px;
+    height: 0.5rem;
     cursor: pointer;
     animate: 0.2s;
     background: transparent;
@@ -369,19 +369,19 @@ input[type=range]::-ms-track {
 
 input[type=range]::-ms-fill-lower {
     background: #1DB954;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 
 input[type=range]::-ms-fill-upper {
     background: #1DB954;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 
 input[type=range]::-ms-thumb {
-    margin-top: 1px;
-    height: 13px;
-    width: 13px;
-    border-radius: 50px;
+    margin-top: 0.1rem;
+    height: 1.3rem;
+    width: 1.3rem;
+    border-radius: 5rem;
     background: #FFFFFF;
     cursor: pointer;
 }
