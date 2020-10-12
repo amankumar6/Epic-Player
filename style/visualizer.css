@@ -1,0 +1,11 @@
+.visualizer_main {
+    width: max-content;
+    margin: auto;
+}
+
+.visualizer {
+    position: fixed;
+    left: 5rem;
+    bottom: 10vh;
+    z-index: -1;
+}

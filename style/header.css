@@ -1,0 +1,40 @@
+.header {
+    background-color: rgb(40, 40, 40);
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    font-size: 3rem;
+    padding: 0 1rem;
+    text-transform: uppercase;
+    text-transform: uppercase;
+    word-spacing: 0.5rem;
+}
+
+.header .header-icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background-color: #1DB954;
+    color: black;
+    font-size: 2.4rem;
+    padding-left: 0.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color 300ms ease;
+    margin-right: 1rem;
+}
+
+.header .header-icon:hover {
+    color: rgb(231, 231, 231);
+}
+
+.header a {
+    color: #1DB954;
+    text-decoration: none;
+}
+
+.header a:hover {
+    color: #1DB954;
+    text-decoration: none;
+}

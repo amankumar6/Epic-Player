@@ -1,0 +1,50 @@
+.music_list {
+    background-color: transparent;
+    color: white;
+    height: 78vh;
+    overflow-y: scroll;
+}
+
+.music_list .music_list_item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 0.01rem solid white;
+    cursor: pointer;
+}
+
+.music_list .music_list_item:hover {
+    color: #1DB954;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.music_list .music_list_item .img_container_list img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.music_list .music_list_item #title_list {
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    word-spacing: 0.2rem;
+    font-size: 1.7rem !important;
+    font-weight: 500;
+}
+
+.music_list .music_list_item #artist_list {
+    text-transform: capitalize;
+    letter-spacing: 0.1rem;
+    font-size: 1.7rem !important;
+}
+
+.active_music {
+    color: black;
+    background-color: #1DB954;
+}
+
+.music_list .active_music:hover {
+    color: black;
+    background-color: #1DB954;
+}
