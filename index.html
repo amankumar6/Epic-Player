@@ -21,7 +21,7 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
 
-    <link rel="stylesheet" type="text/css" href="style/body.css">
+    <link rel="stylesheet" type="text/css" href="style/main.css">
     <link rel="stylesheet" type="text/css" href="style/header.css">
     <link rel="stylesheet" type="text/css" href="style/music_container.css">
     <link rel="stylesheet" type="text/css" href="style/music_controls.css">
@@ -39,14 +39,16 @@
     </div>
 
     <div class="main_div">
+
         <div class="header">
             <i class="fas fa-play header-icon" title="Epic Player"></i>
             <a href="#">Epic Player</a>
         </div>
-        <div class="music_list ">
-        </div>
-        <div class="music_container ">
-            <div class="music_img col-3">
+
+        <div class="music_list "></div>
+
+        <div class="music_container d-flex align-items-center">
+            <div class="music_img col-3 d-flex justify-content-start align-items-center">
                 <div class="img_container">
                     <img src="src/image/Alone.jpg" alt="" class="music_img_change">
                 </div>
@@ -56,25 +58,26 @@
                 </div>
             </div>
 
-            <div class="all_controls col-6">
-                <div class="music_controls">
+            <div class="all_controls col-6 d-flex flex-column">
+                <div class="music_controls d-flex justify-content-between align-items-center">
                     <i class="fas fa-backward" id="prev" title="Previous"></i>
-                    <i class="fas fa-play main_button" id="play" title="Play"></i>
+                    <i class="fas fa-play main_button d-flex justify-content-center align-items-center" id="play" title="Play"></i>
                     <i class="fas fa-forward" id="next" title="Next"></i>
                 </div>
-                <div class="progressbar_container">
-                    <div class="progress_duration_meter">
-                        <div class="current_time"> 0:00 </div>
-                        <div class="total_duration"> 2:43 </div>
-                    </div>
+
+                <div class="progress_duration_meter col-12 d-flex justify-content-between">
+                    <div class="current_time"> 0:00 </div>
 
                     <div class="progress_div">
                         <div class="progress_bar"></div>
                     </div>
 
+                    <div class="total_duration"> 2:43 </div>
                 </div>
+
             </div>
-            <div class="volume_control col-2 offset-md-1">
+
+            <div class="volume_control col-2 offset-md-1 d-flex justify-content-center align-items-center">
                 <i class="fas fa-volume-up" id="volume" title="Volume"></i>
                 <input class="volume_slider" type="range" min="0" max="1" step="0.01" value="1" />
             </div>
@@ -82,7 +85,9 @@
             <audio src="src/music/Alone.mp3" crossorigin="anonymous"></audio>
 
         </div>
+
     </div>
+
     <script type="text/javascript" src="script/code.js"></script>
 </body>
 

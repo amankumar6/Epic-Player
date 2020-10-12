@@ -5,15 +5,15 @@
 }
 
 ::-webkit-scrollbar {
-    width: 1.2rem;
+    width: 1rem;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgb(24, 24, 24);
+    background: black;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #3EECAC;
+    background-color: #1DB954;
     border-radius: 1rem;
 }
 
