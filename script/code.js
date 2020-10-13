@@ -14,6 +14,8 @@ const title = document.getElementById('title');
 const artist = document.getElementById('artist');
 const img = document.querySelector('.music_img_change');
 const musiclist = document.querySelector('.music_list');
+const searchinput = document.getElementById("search_input");
+
 const songList = [{
         name: "Alone",
         title: "Alone",
@@ -148,17 +150,32 @@ window.addEventListener('keydown', function (e) {
 
 musiclist.innerHTML = (songList.map(function (song, songIndex) {
     return `
-		<div class="music_list_item" songIndex="${songIndex}">
+		<li class="music_list_item" songIndex="${songIndex}">
 			<div class="img_container_list col-3">
 				<img src="./src/image/${song.name}.jpg">
 			</div>
-			<h2 class="col-3" id="title_list">${song.name}</h2>
+			<h1 class="col-3" id="title_list">${song.name}</h1>
             <h2 class="col-3" id="artist_list">${song.artist}</h2>
-		</div>
+		</li>
 	`;
 }).join(""));
 
 const musiclistitem = document.querySelectorAll(".music_list_item");
+
+searchinput.addEventListener('keyup', () => {
+    let txtValue;
+    let filter = searchinput.value.toUpperCase();
+    for (let i = 0; i < musiclistitem.length; i++) {
+        search_result = musiclistitem[i].getElementsByTagName("h1")[0];
+        txtValue = search_result.textContent || search_result.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            musiclistitem[i].style.display = "";
+        } else {
+            musiclistitem[i].style.display = "none";
+        }
+    }
+});
+
 for (let i = 0; i < musiclistitem.length; i++) {
     musiclistitem[i].addEventListener("click", function () {
         console.log('musiclistitem Listener start');
