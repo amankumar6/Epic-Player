@@ -1,0 +1,7 @@
+.no_result {
+    color: white;
+    display: none;
+    place-items: center;
+    font-size: 2.5rem;
+    height: 78vh;
+}

@@ -38,3 +38,32 @@
     color: #1DB954;
     text-decoration: none;
 }
+
+#search_input {
+    position: absolute;
+    width: 20rem;
+    right: 1rem;
+    outline: none;
+    padding: 0.5rem 0.1rem 0.5rem 1.5rem;
+    font-size: 1.7rem;
+    border-radius: 0.4rem;
+    border: none;
+}
+
+#search_input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50em;
+    background: url("https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg") no-repeat 50% 50%;
+    background-size: contain;
+    opacity: 0;
+}
+
+#search_input::-webkit-search-cancel-button:hover {
+    cursor: pointer;
+}
+
+#search_input:focus::-webkit-search-cancel-button {
+    opacity: .3;
+}

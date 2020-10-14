@@ -1,5 +1,6 @@
 const loader = document.getElementById("loading");
 const headericon = document.querySelector('.header-icon');
+const searchinput = document.getElementById("search_input");
 const progress = document.querySelector('.progress_bar');
 const currentTime = document.querySelector('.current_time');
 const duration = document.querySelector('.total_duration');
@@ -14,7 +15,7 @@ const title = document.getElementById('title');
 const artist = document.getElementById('artist');
 const img = document.querySelector('.music_img_change');
 const musiclist = document.querySelector('.music_list');
-const searchinput = document.getElementById("search_input");
+const noresult = document.querySelector('.no_result');
 
 const songList = [{
         name: "Alone",
@@ -163,16 +164,35 @@ musiclist.innerHTML = (songList.map(function (song, songIndex) {
 const musiclistitem = document.querySelectorAll(".music_list_item");
 
 searchinput.addEventListener('keyup', () => {
+    search();
+});
+
+function search() {
     let txtValue;
+    let count = 0;
     let filter = searchinput.value.toUpperCase();
     for (let i = 0; i < musiclistitem.length; i++) {
         search_result = musiclistitem[i].getElementsByTagName("h1")[0];
         txtValue = search_result.textContent || search_result.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
             musiclistitem[i].style.display = "";
+            musiclist.style.display = "block";
+            noresult.style.display = "none";
         } else {
             musiclistitem[i].style.display = "none";
+            count++;
+            if (count == musiclistitem.length) {
+                musiclist.style.display = "none";
+                noresult.style.display = "grid";
+            }
         }
+    }
+}
+
+searchinput.addEventListener('input', (e) => {
+    if (!e.inputType && searchinput.value === '') {
+        searchinput.value = null;
+        search();
     }
 });
 
@@ -185,6 +205,8 @@ for (let i = 0; i < musiclistitem.length; i++) {
         playmusic(i);
         musiclistitem[i].classList.add("active_music");
         songIndex = i;
+        searchinput.value = null;
+        search();
         console.log('musiclistitem Listener completed');
     });
 };
@@ -270,8 +292,8 @@ const loadSong = (songList) => {
     console.log('loadsong start');
     title.textContent = songList.title;
     artist.textContent = songList.artist;
-    //music.src = "src/music/" + songList.name + ".mp3";
-    music.src = songList.src;
+    music.src = "src/music/" + songList.name + ".mp3";
+    //music.src = songList.src;
     img.src = "src/image/" + songList.name + ".jpg";
     music.volume = volumeSlider.value;
     console.log('loadsong compelete');

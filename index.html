@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+    <link rel="stylesheet" href="../../fontawesome-free-5.14.0-web/css/all.css">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"> -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -23,6 +24,7 @@
 
     <link rel="stylesheet" type="text/css" href="style/main.css">
     <link rel="stylesheet" type="text/css" href="style/header.css">
+    <link rel="stylesheet" type="text/css" href="style/no_result.css">
     <link rel="stylesheet" type="text/css" href="style/music_container.css">
     <link rel="stylesheet" type="text/css" href="style/music_controls.css">
     <link rel="stylesheet" type="text/css" href="style/music_list.css">
@@ -43,10 +45,14 @@
         <div class="header">
             <i class="fas fa-play header-icon" title="Epic Player"></i>
             <a href="#">Epic Player</a>
-            <input type="text" id="search_input" placeholder="Search" title="Search Your Song">
+            <input type="search" id="search_input" placeholder="Search" title="Search">
         </div>
 
         <ul class="music_list"></ul>
+
+        <div class="no_result">
+            Sorry! No results found
+        </div>
 
         <div class="music_container d-flex align-items-center">
             <div class="music_img col-3 d-flex justify-content-start align-items-center">
@@ -62,7 +68,8 @@
             <div class="all_controls col-6 d-flex flex-column">
                 <div class="music_controls d-flex justify-content-between align-items-center">
                     <i class="fas fa-backward" id="prev" title="Previous"></i>
-                    <i class="fas fa-play main_button d-flex justify-content-center align-items-center" id="play" title="Play"></i>
+                    <i class="fas fa-play main_button d-flex justify-content-center align-items-center" id="play"
+                        title="Play"></i>
                     <i class="fas fa-forward" id="next" title="Next"></i>
                 </div>
 
