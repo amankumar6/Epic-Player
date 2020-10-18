@@ -16,6 +16,7 @@ const artist = document.getElementById('artist');
 const img = document.querySelector('.music_img_change');
 const musiclist = document.querySelector('.music_list');
 const noresult = document.querySelector('.no_result');
+const shuffle = document.getElementById('shuffle');
 
 const songList = [{
         name: "Alone",
@@ -123,7 +124,9 @@ let songIndex = 0;
 let volumeSlider = document.querySelector('.volume_slider');
 let tempslidervalue = volumeSlider.value;
 let before_loadtime = new Date().getTime();
+
 console.log('code starts here')
+
 window.addEventListener('load', () => {
     console.log('WINDOW LOADS')
     console.log('loader start')
@@ -218,6 +221,18 @@ function remove_all_active_list() {
         console.log('remove_all_active_list completed');
     };
 };
+
+shuffle.addEventListener('click', () => {
+    songIndex = Math.floor(Math.random() * (songList.length - 0 + 1)) + 0;
+    musiclistitem[songIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest"
+    });
+    remove_all_active_list();
+    loadSong(songList[songIndex]);
+    playmusic(songIndex)
+})
 
 const playmusic = (e) => {
     console.log('playmusic start');
@@ -364,6 +379,7 @@ function totalTime(seconds) {
 progress_div.addEventListener('click', (event) => {
     console.log('proggress start');
     let move_progress = (event.offsetX / event.srcElement.clientWidth) * music.duration;
+    console.log(move_progress, "slider value")
     music.currentTime = move_progress;
     console.log('proggress compelete');
 });
@@ -396,12 +412,14 @@ const volumedown = () => {
     volumeSlider.value = 0;
     console.log('volumeDown compelete');
 };
+
 const volumelow = () => {
     console.log('volumeLOw start');
     volume.classList.replace('fa-volume-mute', 'fa-volume-down');
     volume.classList.replace('fa-volume-up', 'fa-volume-down');
     console.log('volumeLOw compelete');
-}
+};
+
 const volumeup = () => {
     console.log('volumeUP start');
     ismute = false;
