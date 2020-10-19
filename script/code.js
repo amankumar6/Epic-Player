@@ -193,7 +193,8 @@ function search() {
                 noresult.style.display = "grid";
             }
         }
-    }
+    };
+    event.stopPropagation();
 }
 
 searchinput.addEventListener('input', (e) => {
