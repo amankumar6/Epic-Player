@@ -118,12 +118,14 @@ const songList = [{
 
 ];
 
-let isPlay = false;
-let ismute = false;
-let songIndex = 0;
-let volumeSlider = document.querySelector('.volume_slider');
-let tempslidervalue = volumeSlider.value;
-let before_loadtime = new Date().getTime();
+let isPlay = false,
+    ismute = false,
+    songIndex = 0,
+    volumeSlider = document.querySelector('.volume_slider'),
+    tempslidervalue = volumeSlider.value,
+    before_loadtime = new Date().getTime(),
+    minValue = 1,
+    lastRandom = 0;
 
 console.log('code starts here')
 
@@ -216,27 +218,33 @@ for (let i = 0; i < musiclistitem.length; i++) {
 
 function remove_all_active_list() {
     for (let i = 0; i < musiclistitem.length; i++) {
-        console.log('remove_all_active_list start');
         musiclistitem[i].classList.remove("active_music");
-        console.log('remove_all_active_list completed');
+        console.log('remove_all_active_list done');
     };
 };
 
 shuffle.addEventListener('click', () => {
-    songIndex = Math.floor(Math.random() * (songList.length - 0 + 1)) + 0;
+    console.log('shuffle start');
+    songIndex = Math.floor(Math.random() * (songList.length - minValue + 1)) + minValue;
+    while (lastRandom === songIndex) {
+        songIndex = Math.floor(Math.random() * (songList.length - minValue + 1)) + minValue;
+    }
+    loadSong(songList[songIndex]);
+    playmusic(songIndex);
     musiclistitem[songIndex].scrollIntoView({
         behavior: "smooth",
         block: "nearest",
         inline: "nearest"
     });
-    remove_all_active_list();
-    loadSong(songList[songIndex]);
-    playmusic(songIndex)
-})
+    audioctx.resume();
+    minValue = 0;
+    lastRandom = songIndex;
+    console.log('shuffle completed');
+});
 
 const playmusic = (e) => {
     console.log('playmusic start');
-    //remove_all_active_list();
+    remove_all_active_list();
     musiclistitem[e].classList.add("active_music");
     isPlay = true;
     music.play();
