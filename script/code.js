@@ -1,23 +1,23 @@
-const loader = document.getElementById("loading");
-const headericon = document.querySelector('.header-icon');
-const searchinput = document.getElementById("search_input");
-const progress = document.querySelector('.progress_bar');
-const currentTime = document.querySelector('.current_time');
-const duration = document.querySelector('.total_duration');
-const progress_div = document.querySelector('.progress_div');
-const music = document.querySelector('audio');
-const shadow = document.querySelector('.music_container');
-const prev = document.getElementById('prev');
-const play = document.getElementById('play');
-const next = document.getElementById('next');
-const volume = document.getElementById('volume');
-const title = document.getElementById('title');
-const artist = document.getElementById('artist');
-const img = document.querySelector('.music_img_change');
-const musiclist = document.querySelector('.music_list');
-const noresult = document.querySelector('.no_result');
-const shuffle = document.getElementById('shuffle');
-const repeat = document.getElementById('repeat');
+const loader = document.getElementById("loading"),
+    headericon = document.querySelector('.header-icon'),
+    searchinput = document.getElementById("search_input"),
+    progress = document.querySelector('.progress_bar'),
+    currentTime = document.querySelector('.current_time'),
+    duration = document.querySelector('.total_duration'),
+    progress_div = document.querySelector('.progress_div'),
+    music = document.querySelector('audio'),
+    shadow = document.querySelector('.music_container'),
+    prev = document.getElementById('prev'),
+    play = document.getElementById('play'),
+    next = document.getElementById('next'),
+    volume = document.getElementById('volume'),
+    title = document.getElementById('title'),
+    artist = document.getElementById('artist'),
+    img = document.querySelector('.music_img_change'),
+    musiclist = document.querySelector('.music_list'),
+    noresult = document.querySelector('.no_result'),
+    shuffle = document.getElementById('shuffle'),
+    repeat = document.getElementById('repeat');
 
 const songList = [{
         name: "Alone",
@@ -208,7 +208,6 @@ for (let i = 0; i < musiclistitem.length; i++) {
     musiclistitem[i].addEventListener("click", function () {
         console.log('musiclistitem Listener start');
         remove_all_active_list();
-        //audioctx.resume()
         loadSong(songList[i]);
         playmusic(i);
         musiclistitem[i].classList.add("active_music");
@@ -250,7 +249,6 @@ shuffle.addEventListener('click', () => {
         block: "nearest",
         inline: "nearest"
     });
-    //audioctx.resume();
     minValue = 0;
     lastRandom = songIndex;
     console.log('shuffle completed');
@@ -282,12 +280,10 @@ document.body.onkeyup = function (e) {
             event.stopPropagation();
             pausemusic();
             console.log('window onkeyup = space used for pause');
-            //audioctx.resume()
         } else {
             event.stopPropagation();
             playmusic(songIndex);
             console.log('window onkeyup = space used for play');
-            //audioctx.resume()
         }
     } else if (e.keyCode == 39) {
         if (isPlay) {
@@ -313,7 +309,6 @@ document.body.onkeyup = function (e) {
 play.addEventListener('click', () => {
     console.log('playpausemusic on click start');
     isPlay ? pausemusic() : playmusic(songIndex);
-    //audioctx.resume()
     console.log('playpausemusic on click compelete');
 });
 
@@ -480,7 +475,7 @@ window.addEventListener('load', () => {
     context = canvas.getContext("2d");
     audioctx = new AudioContext();
     WIDTH = window.innerWidth - 50;
-    canvas.width = WIDTH ;
+    canvas.width = WIDTH;
     HEIGHT = 500;
     canvas.height = 500;
     analyser = audioctx.createAnalyser();
