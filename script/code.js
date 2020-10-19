@@ -208,7 +208,7 @@ for (let i = 0; i < musiclistitem.length; i++) {
     musiclistitem[i].addEventListener("click", function () {
         console.log('musiclistitem Listener start');
         remove_all_active_list();
-        audioctx.resume()
+        //audioctx.resume()
         loadSong(songList[i]);
         playmusic(i);
         musiclistitem[i].classList.add("active_music");
@@ -250,7 +250,7 @@ shuffle.addEventListener('click', () => {
         block: "nearest",
         inline: "nearest"
     });
-    audioctx.resume();
+    //audioctx.resume();
     minValue = 0;
     lastRandom = songIndex;
     console.log('shuffle completed');
@@ -259,6 +259,7 @@ shuffle.addEventListener('click', () => {
 const playmusic = (e) => {
     console.log('playmusic start');
     remove_all_active_list();
+    audioctx.resume();
     musiclistitem[e].classList.add("active_music");
     isPlay = true;
     music.play();
@@ -281,12 +282,12 @@ document.body.onkeyup = function (e) {
             event.stopPropagation();
             pausemusic();
             console.log('window onkeyup = space used for pause');
-            audioctx.resume()
+            //audioctx.resume()
         } else {
             event.stopPropagation();
             playmusic(songIndex);
             console.log('window onkeyup = space used for play');
-            audioctx.resume()
+            //audioctx.resume()
         }
     } else if (e.keyCode == 39) {
         if (isPlay) {
@@ -312,7 +313,7 @@ document.body.onkeyup = function (e) {
 play.addEventListener('click', () => {
     console.log('playpausemusic on click start');
     isPlay ? pausemusic() : playmusic(songIndex);
-    audioctx.resume()
+    //audioctx.resume()
     console.log('playpausemusic on click compelete');
 });
 
@@ -437,7 +438,7 @@ const volumedown = () => {
     volume.classList.replace('fa-volume-up', 'fa-volume-mute');
     music.volume = 0;
     volumeSlider.value = 0;
-    volume.title="Unmute";
+    volume.title = "Unmute";
     console.log('volumeDown compelete');
 };
 
@@ -445,7 +446,7 @@ const volumelow = () => {
     console.log('volumeLOW start');
     volume.classList.replace('fa-volume-mute', 'fa-volume-down');
     volume.classList.replace('fa-volume-up', 'fa-volume-down');
-    volume.title="Mute";
+    volume.title = "Mute";
     console.log('volumeLOw compelete');
 };
 
@@ -456,7 +457,7 @@ const volumeup = () => {
     volume.classList.replace('fa-volume-mute', 'fa-volume-up');
     volumeSlider.value = tempslidervalue;
     music.volume = volumeSlider.value;
-    volume.title="Mute";
+    volume.title = "Mute";
     console.log('volumeUP compelete');
 };
 
@@ -479,7 +480,7 @@ window.addEventListener('load', () => {
     context = canvas.getContext("2d");
     audioctx = new AudioContext();
     WIDTH = window.innerWidth - 50;
-    canvas.width = WIDTH - 50;
+    canvas.width = WIDTH ;
     HEIGHT = 500;
     canvas.height = 500;
     analyser = audioctx.createAnalyser();
