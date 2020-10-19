@@ -3,16 +3,20 @@
 }
 
 .music_controls {
-    width: 17rem;
+    width: 25rem;
     margin: 0 auto;
 }
 
-.fas,.fa {
+.fas,.fa,.far {
     color: white;
     font-size: 1.6rem;
     cursor: pointer;
     filter: drop-shadow(0 1.2rem 3rem 0.5rem rgba(0, 0, 0, 0.4));
     transition: all 200ms ease;
+}
+
+.fas:hover,.fa:hover,.far:hover:not(.active_repeat) {
+    color: #cccaca;
 }
 
 .music_controls .main_button {
@@ -25,14 +29,14 @@
     transition: all 400ms ease;
 }
 
-.fas:hover,.fa:hover {
-    color: #cccaca;
-}
-
 .music_controls .main_button:hover {
     background-color: #f6f6f6;
     color: #111;
     box-shadow: 0 1rem 2rem 0.2rem rgba(0, 0, 0, 0.4);
+}
+
+.active_repeat{
+    color: #1DB954;
 }
 
 .progress_duration_meter {

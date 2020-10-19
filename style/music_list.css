@@ -13,7 +13,7 @@
     cursor: pointer;
 }
 
-.music_list .music_list_item:hover {
+.music_list .music_list_item:hover:not(.active_music) {
     color: #1DB954;
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -44,7 +44,7 @@
     background-color: #1DB954;
 }
 
-.music_list .active_music:hover {
+/* .music_list .active_music:hover {
     color: black;
     background-color: #1DB954;
-}
+} */

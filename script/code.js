@@ -17,6 +17,7 @@ const img = document.querySelector('.music_img_change');
 const musiclist = document.querySelector('.music_list');
 const noresult = document.querySelector('.no_result');
 const shuffle = document.getElementById('shuffle');
+const repeat = document.getElementById('repeat');
 
 const songList = [{
         name: "Alone",
@@ -126,6 +127,7 @@ let isPlay = false,
     before_loadtime = new Date().getTime(),
     minValue = 1,
     lastRandom = 0;
+repeatCheck = false
 
 console.log('code starts here')
 
@@ -222,6 +224,17 @@ function remove_all_active_list() {
         console.log('remove_all_active_list done');
     };
 };
+
+repeat.addEventListener('click', () => {
+    if (repeatCheck) {
+        repeat.classList.replace('fa-repeat-1-alt', 'fa-repeat');
+        repeat.classList.remove('active_repeat');
+    } else {
+        repeat.classList.replace('fa-repeat', 'fa-repeat-1-alt');
+        repeat.classList.add('active_repeat');
+    }
+    repeatCheck = !repeatCheck;
+})
 
 shuffle.addEventListener('click', () => {
     console.log('shuffle start');
@@ -361,9 +374,13 @@ music.addEventListener("timeupdate", () => {
     let position = music.currentTime / music.duration;
     progress.style.width = position * 100 + "%";
     convertTime(Math.round(music.currentTime));
-    if (music.ended) {
+    if (music.ended && !repeatCheck) {
         nextSong();
         console.log('music ended nextsong done');
+    }
+    if (music.ended && repeatCheck) {
+        playmusic(songIndex);
+        console.log('music ended but repeat was on so nextsong was not done');
     }
 });
 
@@ -402,7 +419,8 @@ function volumecheck() {
     if (music.volume <= 0.45 && music.volume > 0) {
         volumelow();
     }
-}
+};
+
 volumeSlider.addEventListener('change', () => {
     console.log('volumeSlider start');
     music.volume = volumeSlider.value;
