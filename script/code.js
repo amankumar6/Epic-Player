@@ -437,13 +437,15 @@ const volumedown = () => {
     volume.classList.replace('fa-volume-up', 'fa-volume-mute');
     music.volume = 0;
     volumeSlider.value = 0;
+    volume.title="Unmute";
     console.log('volumeDown compelete');
 };
 
 const volumelow = () => {
-    console.log('volumeLOw start');
+    console.log('volumeLOW start');
     volume.classList.replace('fa-volume-mute', 'fa-volume-down');
     volume.classList.replace('fa-volume-up', 'fa-volume-down');
+    volume.title="Mute";
     console.log('volumeLOw compelete');
 };
 
@@ -454,6 +456,7 @@ const volumeup = () => {
     volume.classList.replace('fa-volume-mute', 'fa-volume-up');
     volumeSlider.value = tempslidervalue;
     music.volume = volumeSlider.value;
+    volume.title="Mute";
     console.log('volumeUP compelete');
 };
 
