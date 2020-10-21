@@ -7,7 +7,7 @@
     margin: 0 auto;
 }
 
-.fas,.fa,.far:not(#search_icon) {
+.fas,.fa,.far {
     color: white;
     font-size: 1.6rem;
     cursor: pointer;
@@ -15,7 +15,7 @@
     transition: all 200ms ease;
 }
 
-.fas:hover,.fa:hover,.far:hover:not(.active_repeat,#search_icon) {
+.fas:hover,.fa:hover,.far:hover:not(.active_repeat) {
     color: #cccaca;
 }
 

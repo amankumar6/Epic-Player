@@ -52,12 +52,13 @@
     font-size: 1.7rem;
     margin-right: 0.4rem;
     filter: drop-shadow(0 1.2rem 3rem 0.5rem rgba(0, 0, 0, 0.4));
+    cursor: inherit;
 }
 
 #search_input {
     width: 20rem;
     outline: none;
-    padding: 0.5rem 0.2rem 0.5rem 0.5rem;
+    padding: 0.5rem 0.4rem 0.5rem 0.5rem;
     font-size: 1.7rem;
     border-radius: 0 1.7rem 1.7rem 0;
     border: none;
