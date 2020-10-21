@@ -15,7 +15,7 @@
     transition: all 200ms ease;
 }
 
-.fas:hover,.fa:hover,.far:hover:not(.active_repeat) {
+.fas:hover:not(.header-icon),.fa:hover,.far:hover:not(.active_icon) {
     color: #cccaca;
 }
 
@@ -35,7 +35,7 @@
     box-shadow: 0 1rem 2rem 0.2rem rgba(0, 0, 0, 0.4);
 }
 
-.active_repeat{
+.active_icon{
     color: #1DB954;
 }
 

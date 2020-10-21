@@ -21,98 +21,98 @@ const loader = document.getElementById("loading"),
 
 const songList = [{
         name: "Alone",
-        title: "Alone",
+        //title: "Alone",
         artist: "Alan Walker",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525882/songs/Alone_th1k4z.mp3",
     },
     {
         name: "Capital Letters",
-        title: "Capital Letters",
+        //title: "Capital Letters",
         artist: "Hailee Steinfeld",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525920/songs/Capital_Letters_qundte.mp3",
     },
     {
         name: "Closer",
-        title: "Closer",
+        //title: "Closer",
         artist: "The Chainsmokers",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525886/songs/Closer_hhlj2l.mp3",
     },
     {
         name: "Counting Stars",
-        title: "Counting Stars",
+        //title: "Counting Stars",
         artist: "One Republic",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525935/songs/Counting_Stars_igwwjn.mp3",
     },
     {
         name: "Demons",
-        title: "Demons",
+        //title: "Demons",
         artist: "Imagine Dragons",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525901/songs/Demons_dhkcpy.mp3",
     },
     {
         name: "Different World",
-        title: "Different World",
+        //title: "Different World",
         artist: "Alan Walker ft. Sofia Carson",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525893/songs/Different_World_wggzgn.mp3",
     },
     {
         name: "Dusk Till Dawn",
-        title: "Dusk Till Dawn",
+        //title: "Dusk Till Dawn",
         artist: "Zayn ft. Sia",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525911/songs/Dusk_Till_Dawn_a1von7.mp3",
     },
     {
         name: "Liar",
-        title: "Liar",
+        //title: "Liar",
         artist: "Camila Cabello",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525938/songs/Liar_p11jmg.mp3",
     },
     {
         name: "No Control",
-        title: "No Control",
+        //title: "No Control",
         artist: "One direction",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525922/songs/No_Control_x8spag.mp3",
     },
     {
         name: "One Last Time",
-        title: "One Last Time",
+        //title: "One Last Time",
         artist: "Ariana Grande",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525943/songs/One_Last_Time_lmefxa.mp3",
     },
 
     {
         name: "This Feeling",
-        title: "This Feeling",
+        //title: "This Feeling",
         artist: "The Chainsmokers ft. Kelsea Ballerini",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525946/songs/This_Feeling_czqgi2.mp3",
     },
     {
         name: "Connection",
-        title: "Connection",
+        //title: "Connection",
         artist: "One Republic",
         src: "",
     },
     {
         name: "Heathens",
-        title: "Heathens",
+        //title: "Heathens",
         artist: "21 Pilots",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525937/songs/Heathens_phva6n.mp3",
     },
     {
         name: "Starboy",
-        title: "Starboy",
+        //title: "Starboy",
         artist: "Starboy ft. Daft Punk",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525945/songs/Starboy_akxoay.mp3",
     },
     {
         name: "The Monster",
-        title: "The Monster",
+        //title: "The Monster",
         artist: "Eminem ft. Rihanna",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602526066/songs/The_Monster_gefhc6.mp3",
     },
     {
         name: "Clarity",
-        title: "Clarity",
+        //title: "Clarity",
         artist: "Zedd ft. Foxes",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525894/songs/Clarity_hpmhgp.mp3",
     },
@@ -126,8 +126,9 @@ let isPlay = false,
     tempslidervalue = volumeSlider.value,
     before_loadtime = new Date().getTime(),
     minValue = 1,
-    lastRandom = 0;
-repeatCheck = false
+    lastRandom = 0,
+    repeatCheck = false,
+    shuffleCheck = false;
 
 console.log('code starts here')
 
@@ -228,20 +229,32 @@ function remove_all_active_list() {
 repeat.addEventListener('click', () => {
     if (repeatCheck) {
         repeat.classList.replace('fa-repeat-1-alt', 'fa-repeat');
-        repeat.classList.remove('active_repeat');
+        repeat.classList.remove('active_icon');
     } else {
         repeat.classList.replace('fa-repeat', 'fa-repeat-1-alt');
-        repeat.classList.add('active_repeat');
+        repeat.classList.add('active_icon');
     }
     repeatCheck = !repeatCheck;
 })
 
 shuffle.addEventListener('click', () => {
-    console.log('shuffle start');
-    songIndex = Math.floor(Math.random() * (songList.length - minValue + 1)) + minValue;
-    while (lastRandom === songIndex) {
-        songIndex = Math.floor(Math.random() * (songList.length - minValue + 1)) + minValue;
+    if (shuffleCheck) {
+        shuffle.classList.remove('active_icon');
+        shuffle.title = "Shuffle: On"
+    } else {
+        shuffle.classList.add('active_icon');
+        shuffle.title = "Shuffle: Off"
     }
+    shuffleCheck = !shuffleCheck;
+});
+
+function shuffleSong() {
+    console.log('shuffle start');
+    songIndex = Math.floor(Math.random() * ((songList.length-1) - minValue + 1)) + minValue;
+    while (lastRandom === songIndex) {
+        songIndex = Math.floor(Math.random() * ((songList.length-1) - minValue + 1)) + minValue;
+    }
+    console.log(songIndex,"shuffle song index");
     loadSong(songList[songIndex]);
     playmusic(songIndex);
     musiclistitem[songIndex].scrollIntoView({
@@ -252,7 +265,7 @@ shuffle.addEventListener('click', () => {
     minValue = 0;
     lastRandom = songIndex;
     console.log('shuffle completed');
-});
+}
 
 const playmusic = (e) => {
     console.log('playmusic start');
@@ -262,6 +275,7 @@ const playmusic = (e) => {
     isPlay = true;
     music.play();
     play.classList.replace('fa-play', 'fa-pause');
+    play.title = "Pause";
     console.log('playmusic compelete');
 };
 
@@ -270,6 +284,7 @@ const pausemusic = () => {
     isPlay = false;
     music.pause();
     play.classList.replace('fa-pause', 'fa-play');
+    play.title = "Play";
     console.log('pause compelete');
 };
 
@@ -323,7 +338,7 @@ headericon.addEventListener('click', () => {
 
 const loadSong = (songList) => {
     console.log('loadsong start');
-    title.textContent = songList.title;
+    title.textContent = songList.name;
     artist.textContent = songList.artist;
     music.src = "src/music/" + songList.name + ".mp3";
     //music.src = songList.src;
@@ -334,31 +349,39 @@ const loadSong = (songList) => {
 
 const prevSong = () => {
     console.log('prevsong button start');
-    songIndex = (songIndex - 1 + songList.length) % songList.length;
-    remove_all_active_list();
-    musiclistitem[songIndex].classList.add("active_music");
-    musiclistitem[songIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "nearest"
-    });
-    loadSong(songList[songIndex]);
-    playmusic(songIndex);
+    if (shuffleCheck) {
+        shuffleSong();
+    } else {
+        songIndex = (songIndex - 1 + songList.length) % songList.length;
+        remove_all_active_list();
+        musiclistitem[songIndex].classList.add("active_music");
+        musiclistitem[songIndex].scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "nearest"
+        });
+        loadSong(songList[songIndex]);
+        playmusic(songIndex);
+    }
     console.log('prevsong button compelete');
 };
 
 const nextSong = () => {
     console.log('nextsong button start');
-    songIndex = (songIndex + 1) % songList.length;
-    remove_all_active_list();
-    musiclistitem[songIndex].classList.add("active_music");
-    musiclistitem[songIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "nearest"
-    });
-    loadSong(songList[songIndex]);
-    playmusic(songIndex);
+    if (shuffleCheck) {
+        shuffleSong();
+    } else {
+        songIndex = (songIndex + 1) % songList.length;
+        remove_all_active_list();
+        musiclistitem[songIndex].classList.add("active_music");
+        musiclistitem[songIndex].scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "nearest"
+        });
+        loadSong(songList[songIndex]);
+        playmusic(songIndex);
+    }
     console.log('nextsong button compelete');
 };
 
@@ -371,13 +394,20 @@ music.addEventListener("timeupdate", () => {
     let position = music.currentTime / music.duration;
     progress.style.width = position * 100 + "%";
     convertTime(Math.round(music.currentTime));
-    if (music.ended && !repeatCheck) {
+    if (music.ended && !repeatCheck && !shuffleCheck) {
         nextSong();
         console.log('music ended nextsong done');
     }
-    if (music.ended && repeatCheck) {
+    if (music.ended && repeatCheck && shuffleCheck) {
+        playmusic(songIndex);
+        console.log('music ended and shuffle was on but repeat was on so nextsong was not done');
+    }
+    if (music.ended && repeatCheck && !shuffleCheck) {
         playmusic(songIndex);
         console.log('music ended but repeat was on so nextsong was not done');
+    }
+    if (music.ended && !repeatCheck && shuffleCheck) {
+        shuffleSong();
     }
 });
 
