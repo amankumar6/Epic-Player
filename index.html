@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- <link rel="stylesheet" href="../../fontawesome-free-5.14.0-web/css/all.css"> -->
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"> -->
-    <link rel="stylesheet" href="../../fontawesome-5-pro-master/css/all.css"> 
+    <!-- <link rel="stylesheet" href="../../fontawesome-5-pro-master/css/all.css"> -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.14.0/css/all.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -47,7 +46,12 @@
         <div class="header">
             <i class="fas fa-play header-icon" title="Epic Player"></i>
             <a href="#">Epic Player</a>
-            <input type="search" id="search_input" placeholder="Search">
+
+            <div class="search_box d-flex justify-content-center align-items-center">
+                <i class="far fa-search" id="search_icon"></i>
+                <input type="search" id="search_input" placeholder="Search">
+            </div>
+
         </div>
 
         <ul class="music_list"></ul>
@@ -57,6 +61,7 @@
         </div>
 
         <div class="music_container d-flex align-items-center">
+
             <div class="music_img col-3 d-flex justify-content-start align-items-center">
                 <div class="img_container">
                     <img alt="" class="music_img_change">
@@ -92,7 +97,6 @@
             </div>
 
             <div class="volume_control col-2 offset-md-1 d-flex justify-content-center align-items-center">
-                
                 <i class="fas fa-volume-up" id="volume" title="Mute"></i>
                 <input class="volume_slider" type="range" min="0" max="1" step="0.01" value="1" />
             </div>
