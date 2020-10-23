@@ -250,11 +250,11 @@ shuffle.addEventListener('click', () => {
 
 function shuffleSong() {
     console.log('shuffle start');
-    songIndex = Math.floor(Math.random() * ((songList.length-1) - minValue + 1)) + minValue;
+    songIndex = Math.floor(Math.random() * ((songList.length - 1) - minValue + 1)) + minValue;
     while (lastRandom === songIndex) {
-        songIndex = Math.floor(Math.random() * ((songList.length-1) - minValue + 1)) + minValue;
+        songIndex = Math.floor(Math.random() * ((songList.length - 1) - minValue + 1)) + minValue;
     }
-    console.log(songIndex,"shuffle song index");
+    console.log(songIndex, "shuffle song index");
     loadSong(songList[songIndex]);
     playmusic(songIndex);
     musiclistitem[songIndex].scrollIntoView({
@@ -343,7 +343,7 @@ const loadSong = (songList) => {
     music.src = "src/music/" + songList.name + ".mp3";
     //music.src = songList.src;
     img.src = "src/image/" + songList.name + ".jpg";
-    music.volume = volumeSlider.value;
+    music.volume = (volumeSlider.value) / 100;
     console.log('loadsong compelete');
 };
 
@@ -450,10 +450,10 @@ function volumecheck() {
 
 volumeSlider.addEventListener('change', () => {
     console.log('volumeSlider start');
-    music.volume = volumeSlider.value;
-    tempslidervalue = volumeSlider.value;
+    music.volume = (volumeSlider.value) / 100;
+    tempslidervalue = (volumeSlider.value) / 100;
     volumecheck();
-    console.log('volumeSlider compelete');
+    console.log('volumeSlider compelete', volumeSlider.value / 100);
 })
 
 const volumedown = () => {
@@ -480,8 +480,8 @@ const volumeup = () => {
     ismute = false;
     volume.classList.replace('fa-volume-down', 'fa-volume-up');
     volume.classList.replace('fa-volume-mute', 'fa-volume-up');
-    volumeSlider.value = tempslidervalue;
-    music.volume = volumeSlider.value;
+    volumeSlider.value = tempslidervalue * 100;
+    music.volume = (volumeSlider.value) / 100;
     volume.title = "Mute";
     console.log('volumeUP compelete');
 };
@@ -490,6 +490,12 @@ volume.addEventListener('click', () => {
     ismute ? volumeup() : volumedown();
     volumecheck();
 });
+
+volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
+
+volumeSlider.oninput = function () {
+    volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)'
+}
 
 let canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, WIDTH, HEIGHT, bigBars = 0,
     INTERVAL = 128,
