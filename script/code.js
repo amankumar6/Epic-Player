@@ -437,6 +437,7 @@ progress_div.addEventListener('click', (event) => {
 });
 
 function volumecheck() {
+    volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
     if (music.volume > 0.45) {
         volumeup();
     }
@@ -454,7 +455,11 @@ volumeSlider.addEventListener('change', () => {
     tempslidervalue = (volumeSlider.value) / 100;
     volumecheck();
     console.log('volumeSlider compelete', volumeSlider.value / 100);
-})
+});
+
+volumeSlider.addEventListener('keyup', function (e) {
+    event.stopPropagation();
+});
 
 const volumedown = () => {
     console.log('volumeDown start');
