@@ -191,6 +191,7 @@ function search() {
             count++;
             if (count == musiclistitem.length) {
                 musiclist.style.display = "none";
+                document.querySelector('.no_result_txt').innerText = "\"" + searchinput.value + "\"";
                 noresult.style.display = "grid";
             }
         }

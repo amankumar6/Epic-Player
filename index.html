@@ -24,7 +24,6 @@
 
     <link rel="stylesheet" type="text/css" href="style/main.css">
     <link rel="stylesheet" type="text/css" href="style/header.css">
-    <link rel="stylesheet" type="text/css" href="style/no_result.css">
     <link rel="stylesheet" type="text/css" href="style/music_container.css">
     <link rel="stylesheet" type="text/css" href="style/music_controls.css">
     <link rel="stylesheet" type="text/css" href="style/music_list.css">
@@ -57,7 +56,13 @@
         <ul class="music_list"></ul>
 
         <div class="no_result">
-            Sorry! No results Found
+            <div class="text-info">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    Sorry, we could'nt find any results matching
+                    <p class="no_result_txt"></p>
+                </div>
+            </div>
         </div>
 
         <div class="music_container d-flex align-items-center">
