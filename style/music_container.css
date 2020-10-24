@@ -8,7 +8,7 @@
     bottom: 0;
     left: 0;
     background-color: rgb(40, 40, 40);
-    height: 12vh;
+    height: 7.5rem;
 }
 
 .img_container {
@@ -20,7 +20,7 @@
 img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
     border-radius: 0.5rem;
 }
 
@@ -45,4 +45,53 @@ img {
     font-size: 1.4rem;
     margin-bottom: 4rem;
     font-weight: 300;
+    max-width: 22rem;
+}
+
+@media all and (max-width: 1230px) {
+    .music_name #artist {
+        max-width: 17rem;
+    }
+}
+
+@media all and (max-width: 1140px) {
+    .music_name #title {
+        max-width: 15rem;
+    }
+
+    .music_name #artist {
+        max-width: 13rem;
+    }
+}
+
+@media all and (max-width: 1040px) {
+    .music_name #title {
+        max-width: 13rem;
+    }
+}
+
+@media all and (max-width: 970px) {
+    .music_name #title {
+        max-width: 11rem;
+    }
+
+    .music_name #artist {
+        max-width: 9rem;
+    }
+}
+
+@media all and (max-width: 880px) {
+    .music_name #title {
+        max-width: 9rem;
+    }
+
+    .music_name #artist {
+        max-width: 7rem;
+    }
+}
+
+@media all and (max-width: 765px) {
+    .music_name {
+        display: none;
+    }
 }

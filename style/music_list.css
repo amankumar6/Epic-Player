@@ -1,8 +1,10 @@
 .music_list {
     background-color: transparent;
     color: white;
-    height: 78vh;
-    overflow-y: scroll;
+    height: 100vh;
+    overflow-y: scroll !important;
+    padding-bottom: 15rem;
+
 }
 
 .music_list .music_list_item {
@@ -16,6 +18,10 @@
 .music_list .music_list_item:hover:not(.active_music) {
     color: #1DB954;
     background-color: rgba(0, 0, 0, 0.4);
+}
+
+.music_list .music_list_item #song_index {
+    font-size: 1.7rem !important;
 }
 
 .music_list .music_list_item .img_container_list img {
@@ -61,7 +67,24 @@
     font-size: 9rem;
 }
 
-.no_result .text-info div{
+.no_result .text-info div {
     font-size: 2.2rem;
     margin-left: 1rem;
+}
+
+.music_list::-webkit-scrollbar {
+    width: 1rem;
+}
+
+.music_list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.music_list::-webkit-scrollbar-thumb {
+    background-color: #1DB954;
+    border-radius: 1rem;
+}
+
+.music_list::-webkit-scrollbar-button:end:increment {
+    height: 15rem;
 }

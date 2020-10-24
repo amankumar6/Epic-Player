@@ -7,7 +7,7 @@
     margin: 0 auto;
 }
 
-.fas:not(.fa-info-circle),
+.fas:not(.header-icon):not(.fa-info-circle),
 .fa,
 .far {
     color: white;

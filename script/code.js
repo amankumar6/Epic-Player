@@ -21,102 +21,84 @@ const loader = document.getElementById("loading"),
 
 const songList = [{
         name: "Alone",
-        //title: "Alone",
         artist: "Alan Walker",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525882/songs/Alone_th1k4z.mp3",
     },
     {
         name: "Capital Letters",
-        //title: "Capital Letters",
         artist: "Hailee Steinfeld",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525920/songs/Capital_Letters_qundte.mp3",
     },
     {
         name: "Closer",
-        //title: "Closer",
         artist: "The Chainsmokers",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525886/songs/Closer_hhlj2l.mp3",
     },
     {
         name: "Counting Stars",
-        //title: "Counting Stars",
         artist: "One Republic",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525935/songs/Counting_Stars_igwwjn.mp3",
     },
     {
         name: "Demons",
-        //title: "Demons",
         artist: "Imagine Dragons",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525901/songs/Demons_dhkcpy.mp3",
     },
     {
         name: "Different World",
-        //title: "Different World",
         artist: "Alan Walker ft. Sofia Carson",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525893/songs/Different_World_wggzgn.mp3",
     },
     {
         name: "Dusk Till Dawn",
-        //title: "Dusk Till Dawn",
         artist: "Zayn ft. Sia",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525911/songs/Dusk_Till_Dawn_a1von7.mp3",
     },
     {
         name: "Liar",
-        //title: "Liar",
         artist: "Camila Cabello",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525938/songs/Liar_p11jmg.mp3",
     },
     {
         name: "No Control",
-        //title: "No Control",
         artist: "One direction",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525922/songs/No_Control_x8spag.mp3",
     },
     {
         name: "One Last Time",
-        //title: "One Last Time",
         artist: "Ariana Grande",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525943/songs/One_Last_Time_lmefxa.mp3",
     },
-
     {
         name: "This Feeling",
-        //title: "This Feeling",
         artist: "The Chainsmokers ft. Kelsea Ballerini",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525946/songs/This_Feeling_czqgi2.mp3",
     },
     {
         name: "Connection",
-        //title: "Connection",
         artist: "One Republic",
-        src: "",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525885/songs/Connection_zd2jyn.mp3",
     },
     {
         name: "Heathens",
-        //title: "Heathens",
         artist: "21 Pilots",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525937/songs/Heathens_phva6n.mp3",
     },
     {
         name: "Starboy",
-        //title: "Starboy",
         artist: "Starboy ft. Daft Punk",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525945/songs/Starboy_akxoay.mp3",
     },
     {
         name: "The Monster",
-        //title: "The Monster",
         artist: "Eminem ft. Rihanna",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602526066/songs/The_Monster_gefhc6.mp3",
     },
     {
         name: "Clarity",
-        //title: "Clarity",
         artist: "Zedd ft. Foxes",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525894/songs/Clarity_hpmhgp.mp3",
     },
-
 ];
 
 let isPlay = false,
@@ -192,12 +174,16 @@ document.body.onkeyup = function (e) {
 
 musiclist.innerHTML = (songList.map(function (song, songIndex) {
     return `
-		<li class="music_list_item" songIndex="${songIndex}">
-			<div class="img_container_list col-3">
+        <li class="music_list_item" songIndex="${songIndex}">
+            <h3 id="song_index" class="col-1 offset-md-1">
+                ${songIndex+1}.
+            </h3>
+            <div class="img_container_list col-1">
 				<img src="./src/image/${song.name}.jpg">
 			</div>
-			<h1 class="col-3" id="title_list">${song.name}</h1>
-            <h2 class="col-3" id="artist_list">${song.artist}</h2>
+			<h1 class="col-3 offset-1 offset-md-0" id="title_list">${song.name}</h1>
+            <h2 class="col-4 col-md-3" id="artist_list">${song.artist}</h2>
+            <h3 class="col-2">Album</h3>
 		</li>
 	`;
 }).join(""));
@@ -435,12 +421,12 @@ progress_div.addEventListener('click', (event) => {
     console.log('proggress compelete');
 });
 
-progress_div.addEventListener("wheel", function(e) {
+progress_div.addEventListener("wheel", function (e) {
     let dir = Math.sign(e.deltaY);
-    if(dir<0){
+    if (dir < 0) {
         music.currentTime += 5;
     }
-    if(dir>0){
+    if (dir > 0) {
         music.currentTime -= 5;
     }
     console.log(dir);
