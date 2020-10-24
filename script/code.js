@@ -157,6 +157,39 @@ window.addEventListener('keydown', function (e) {
     console.log('preventDefault space completed');
 });
 
+document.body.onkeyup = function (e) {
+    console.log('window onkeyup start');
+    if (e.keyCode == 32) {
+        if (isPlay) {
+            event.stopPropagation();
+            pausemusic();
+            console.log('window onkeyup = space used for pause');
+        } else {
+            event.stopPropagation();
+            playmusic(songIndex);
+            console.log('window onkeyup = space used for play');
+        }
+    } else if (e.keyCode == 39) {
+        if (isPlay) {
+            music.currentTime += 5;
+            console.log('window onkeyup = +5sec');
+        } else {
+            music.currentTime += 5;
+            console.log('window onkeyup = +5sec');
+        }
+
+    } else if (e.keyCode == 37) {
+        if (isPlay) {
+            music.currentTime -= 5;
+            console.log('window onkeyup = -5sec');
+        } else {
+            music.currentTime -= 5;
+            console.log('window onkeyup = -5sec');
+        }
+    }
+    console.log('window onkeyup start');
+};
+
 musiclist.innerHTML = (songList.map(function (song, songIndex) {
     return `
 		<li class="music_list_item" songIndex="${songIndex}">
@@ -289,39 +322,6 @@ const pausemusic = () => {
     console.log('pause compelete');
 };
 
-document.body.onkeyup = function (e) {
-    console.log('window onkeyup start');
-    if (e.keyCode == 32) {
-        if (isPlay) {
-            event.stopPropagation();
-            pausemusic();
-            console.log('window onkeyup = space used for pause');
-        } else {
-            event.stopPropagation();
-            playmusic(songIndex);
-            console.log('window onkeyup = space used for play');
-        }
-    } else if (e.keyCode == 39) {
-        if (isPlay) {
-            music.currentTime += 5;
-            console.log('window onkeyup = +5sec');
-        } else {
-            music.currentTime += 5;
-            console.log('window onkeyup = +5sec');
-        }
-
-    } else if (e.keyCode == 37) {
-        if (isPlay) {
-            music.currentTime -= 5;
-            console.log('window onkeyup = -5sec');
-        } else {
-            music.currentTime -= 5;
-            console.log('window onkeyup = -5sec');
-        }
-    }
-    console.log('window onkeyup start');
-};
-
 play.addEventListener('click', () => {
     console.log('playpausemusic on click start');
     isPlay ? pausemusic() : playmusic(songIndex);
@@ -389,8 +389,6 @@ const nextSong = () => {
 prev.addEventListener('click', prevSong);
 next.addEventListener('click', nextSong);
 
-const progress_circle = document.querySelector('.progress_circle');
-
 music.addEventListener("timeupdate", () => {
     let position = music.currentTime / music.duration;
     progress.style.width = position * 100 + "%";
@@ -435,6 +433,17 @@ progress_div.addEventListener('click', (event) => {
     console.log(move_progress, "slider value")
     music.currentTime = move_progress;
     console.log('proggress compelete');
+});
+
+progress_div.addEventListener("wheel", function(e) {
+    let dir = Math.sign(e.deltaY);
+    if(dir<0){
+        music.currentTime += 5;
+    }
+    if(dir>0){
+        music.currentTime -= 5;
+    }
+    console.log(dir);
 });
 
 function volumecheck() {
@@ -500,7 +509,7 @@ volume.addEventListener('click', () => {
 volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
 
 volumeSlider.oninput = function () {
-    volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)'
+    volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
 }
 
 let canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, WIDTH, HEIGHT, bigBars = 0,
