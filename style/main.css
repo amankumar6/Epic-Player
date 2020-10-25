@@ -21,3 +21,13 @@ body {
     background: white url('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/6d391369321565.5b7d0d570e829.gif') no-repeat center center;
     z-index: 1;
 }
+
+.compatibility{
+    height: 75vh;
+    letter-spacing: 0.1rem;
+    font-size: 2.3rem !important;
+}
+
+.compatibility p .rotate_device{
+    width: 2.5rem;
+}

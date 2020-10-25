@@ -6,7 +6,7 @@ const loader = document.getElementById("loading"),
     duration = document.querySelector('.total_duration'),
     progress_div = document.querySelector('.progress_div'),
     music = document.querySelector('audio'),
-    shadow = document.querySelector('.music_container'),
+    musiccontainer = document.querySelector('.music_container'),
     prev = document.getElementById('prev'),
     play = document.getElementById('play'),
     next = document.getElementById('next'),
@@ -17,9 +17,11 @@ const loader = document.getElementById("loading"),
     musiclist = document.querySelector('.music_list'),
     noresult = document.querySelector('.no_result'),
     shuffle = document.getElementById('shuffle'),
-    repeat = document.getElementById('repeat');
+    repeat = document.getElementById('repeat'),
+    compatibility = document.querySelector('.compatibility'),
+    canvas = document.getElementById("cnv1");
 
-    const songList = [{
+const songList = [{
         name: "Alone",
         artist: "Alan Walker",
         album: "Different World",
@@ -117,7 +119,15 @@ const loader = document.getElementById("loading"),
     },
 ];
 
-let isPlay = false,
+let context, audioctx, analyser, oscillator, freqArr, barHeight, source, WIDTH, HEIGHT,
+    bigBars = 0,
+    INTERVAL = 128,
+    SAMPLES = 2048,
+    r = 0,
+    g = 0,
+    b = 255,
+    x = 0,
+    isPlay = false,
     ismute = false,
     songIndex = 0,
     volumeSlider = document.querySelector('.volume_slider'),
@@ -128,7 +138,34 @@ let isPlay = false,
     repeatCheck = false,
     shuffleCheck = false;
 
-console.log('code starts here')
+console.log('code starts here');
+
+console.log("screen width:", screen.width);
+console.log("screen height:", screen.height);
+
+if (screen.width <= 480 && screen.height <= 480) {
+    musiclist.classList.add('d-none');
+    compatibility.classList.replace('d-none', 'd-flex');
+    canvas.classList.add('d-none');
+    musiccontainer.classList.replace('d-flex', 'd-none');
+    compatibility.innerHTML = ` 
+        <p>
+            Sorry Your Device is not Epic to use Epic Player.
+        </p>
+    `
+}
+
+if (screen.width <= 480 && screen.height >= 480) {
+    musiclist.classList.add('d-none');
+    compatibility.classList.replace('d-none', 'd-flex');
+    canvas.classList.add('d-none');
+    musiccontainer.classList.replace('d-flex', 'd-none');
+    compatibility.innerHTML = `
+        <p>
+            <img src="src/screen_rotation-white-18dp.svg" alt="rotate" class="rotate_device"> Rotate you device and reload the page to use Epic Player.
+        </p>
+    `
+}
 
 window.addEventListener('load', () => {
     console.log('WINDOW LOADS')
@@ -146,47 +183,48 @@ window.addEventListener('load', () => {
     console.log('loader completed')
 });
 
-window.addEventListener('keydown', function (e) {
-    console.log('preventDefault space start');
-    if (e.keyCode == 32 && e.target == document.body) {
-        e.preventDefault();
-        console.log('preventDefault Space done');
-    }
-    console.log('preventDefault space completed');
-});
+if (screen.width > 480 || screen.height > 480) {
+    window.addEventListener('keydown', function (e) { 
+        console.log('preventDefault space start');
+        if (e.keyCode == 32 && e.target == document.body) {
+            e.preventDefault();
+            console.log('preventDefault Space done');
+        }
+        console.log('preventDefault space completed');
+    });
 
-document.body.onkeyup = function (e) {
-    console.log('window onkeyup start');
-    if (e.keyCode == 32) {
-        if (isPlay) {
-            event.stopPropagation();
-            pausemusic();
-            console.log('window onkeyup = space used for pause');
-        } else {
-            event.stopPropagation();
-            playmusic(songIndex);
-            console.log('window onkeyup = space used for play');
+    document.body.onkeyup = function (e) {
+        console.log('window onkeyup start');
+        if (e.keyCode == 32) {
+            if (isPlay) {
+                event.stopPropagation();
+                pausemusic();
+                console.log('window onkeyup = space used for pause');
+            } else {
+                event.stopPropagation();
+                playmusic(songIndex);
+                console.log('window onkeyup = space used for play');
+            }
+        } else if (e.keyCode == 39) {
+            if (isPlay) {
+                music.currentTime += 5;
+                console.log('window onkeyup = +5sec');
+            } else {
+                music.currentTime += 5;
+                console.log('window onkeyup = +5sec');
+            }
+        } else if (e.keyCode == 37) {
+            if (isPlay) {
+                music.currentTime -= 5;
+                console.log('window onkeyup = -5sec');
+            } else {
+                music.currentTime -= 5;
+                console.log('window onkeyup = -5sec');
+            }
         }
-    } else if (e.keyCode == 39) {
-        if (isPlay) {
-            music.currentTime += 5;
-            console.log('window onkeyup = +5sec');
-        } else {
-            music.currentTime += 5;
-            console.log('window onkeyup = +5sec');
-        }
-
-    } else if (e.keyCode == 37) {
-        if (isPlay) {
-            music.currentTime -= 5;
-            console.log('window onkeyup = -5sec');
-        } else {
-            music.currentTime -= 5;
-            console.log('window onkeyup = -5sec');
-        }
-    }
-    console.log('window onkeyup start');
-};
+        console.log('window onkeyup start');
+    };
+}
 
 musiclist.innerHTML = (songList.map(function (song, songIndex) {
     return `
@@ -199,7 +237,7 @@ musiclist.innerHTML = (songList.map(function (song, songIndex) {
 			</div>
 			<h1 class="col-3 offset-1 offset-md-0" id="title_list">${song.name}</h1>
             <h2 class="col-4 col-md-3" id="artist_list">${song.artist}</h2>
-            <h3 class="col-2">${song.album}</h3>
+            <h3 class="col-2 text-truncate" title="${song.album}">${song.album}</h3>
 		</li>
 	`;
 }).join(""));
@@ -343,6 +381,7 @@ const loadSong = (songList) => {
     console.log('loadsong start');
     title.textContent = songList.name;
     artist.textContent = songList.artist;
+    artist.title = songList.artist;
     music.src = "src/music/" + songList.name + ".mp3";
     //music.src = songList.src;
     img.src = "src/image/" + songList.name + ".jpg";
@@ -514,17 +553,8 @@ volumeSlider.oninput = function () {
     volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
 }
 
-let canvas, context, audioctx, analyser, oscillator, freqArr, barHeight, source, WIDTH, HEIGHT, bigBars = 0,
-    INTERVAL = 128,
-    SAMPLES = 2048,
-    r = 0,
-    g = 0,
-    b = 255,
-    x = 0;
-
 window.addEventListener('load', () => {
     console.log('vusializer start')
-    canvas = document.getElementById("cnv1");
     context = canvas.getContext("2d");
     audioctx = new AudioContext();
     WIDTH = window.innerWidth - 50;
