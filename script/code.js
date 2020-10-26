@@ -184,7 +184,7 @@ window.addEventListener('load', () => {
 });
 
 if (screen.width > 480 || screen.height > 480) {
-    window.addEventListener('keydown', function (e) { 
+    window.addEventListener('keydown', function (e) {
         console.log('preventDefault space start');
         if (e.keyCode == 32 && e.target == document.body) {
             e.preventDefault();
@@ -221,6 +221,8 @@ if (screen.width > 480 || screen.height > 480) {
                 music.currentTime -= 5;
                 console.log('window onkeyup = -5sec');
             }
+        } else if (e.keyCode == 77) {
+            MforMute();
         }
         console.log('window onkeyup start');
     };
@@ -510,7 +512,22 @@ volumeSlider.addEventListener('change', () => {
 
 volumeSlider.addEventListener('keyup', function (e) {
     event.stopPropagation();
+    if (e.keyCode == 77) {
+        MforMute();
+    }
 });
+
+const MforMute = () => {
+    console.log('M for Mute');
+    if (music.volume != 0) {
+        volumedown();
+        volumecheck();
+    } else if (music.volume == 0) {
+        console.log('M for Mute 0');
+        volumeup();
+        volumecheck();
+    }
+}
 
 const volumedown = () => {
     console.log('volumeDown start');
