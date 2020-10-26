@@ -1,12 +1,5 @@
-.main_div {
-    width: 100vw;
-}
-
 .music_container {
     width: 100vw;
-    position: fixed;
-    bottom: 0;
-    left: 0;
     background-color: rgb(40, 40, 40);
     height: 7.5rem;
 }
@@ -93,5 +86,9 @@ img {
 @media all and (max-width: 765px) {
     .music_name {
         display: none;
+    }
+
+    .music_container {
+        padding: 1rem 0;
     }
 }

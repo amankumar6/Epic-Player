@@ -143,7 +143,7 @@ console.log('code starts here');
 console.log("screen width:", screen.width);
 console.log("screen height:", screen.height);
 
-if (screen.width <= 480 && screen.height <= 480) {
+if (screen.width < 480 && screen.height < 480) {
     musiclist.classList.add('d-none');
     compatibility.classList.replace('d-none', 'd-flex');
     canvas.classList.add('d-none');
@@ -155,7 +155,7 @@ if (screen.width <= 480 && screen.height <= 480) {
     `
 }
 
-if (screen.width <= 480 && screen.height >= 480) {
+if (screen.width < 480 && screen.height >= 480) {
     musiclist.classList.add('d-none');
     compatibility.classList.replace('d-none', 'd-flex');
     canvas.classList.add('d-none');
@@ -183,7 +183,7 @@ window.addEventListener('load', () => {
     console.log('loader completed')
 });
 
-if (screen.width > 480 || screen.height > 480) {
+if (screen.width >= 480 || screen.height >= 480) {
     window.addEventListener('keydown', function (e) {
         console.log('preventDefault space start');
         if (e.keyCode == 32 && e.target == document.body) {

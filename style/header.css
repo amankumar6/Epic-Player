@@ -1,10 +1,7 @@
 .header {
     background-color: rgb(40, 40, 40);
-    height: 7.5rem;
-    /* display: flex;
-    align-items: center; */
     font-size: 3rem;
-    padding: 0 1rem;
+    padding: 1.2rem 1rem;
     text-transform: uppercase;
     text-transform: uppercase;
     word-spacing: 0.5rem;
@@ -44,8 +41,6 @@
     border-radius: 1.7rem;
     padding-left: 0.7rem;
     width: max-content;
-    /* position: absolute;
-    right: 1rem; */
 }
 
 #search_icon {
@@ -85,8 +80,19 @@
 
 @media all and (max-width: 576px) {
     .header {
-        height: 12rem;
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .header .title {
+        margin-bottom: 1rem;
+    }
+}
+
+@media all and (max-width: 479px) {
+    .header {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
     }
 }

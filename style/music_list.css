@@ -1,10 +1,12 @@
 .music_list {
     background-color: transparent;
     color: white;
-    height: 100vh;
+    /* height: 100vh;
     overflow-y: scroll !important;
-    padding-bottom: 15rem;
-
+    padding-bottom: 15rem; */
+    overflow-y: auto;
+    flex-grow: 1;
+    margin-bottom: 0 !important;
 }
 
 .music_list .music_list_item {
@@ -53,7 +55,7 @@
 .no_result {
     display: none;
     place-items: center;
-    height: 78vh;
+    flex-grow: 1;
     background-color: black;
 }
 
@@ -83,8 +85,4 @@
 .music_list::-webkit-scrollbar-thumb {
     background-color: #1DB954;
     border-radius: 1rem;
-}
-
-.music_list::-webkit-scrollbar-button:end:increment {
-    height: 15rem;
 }
