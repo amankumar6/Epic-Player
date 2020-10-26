@@ -1,9 +1,6 @@
 .music_list {
     background-color: transparent;
     color: white;
-    /* height: 100vh;
-    overflow-y: scroll !important;
-    padding-bottom: 15rem; */
     overflow-y: auto;
     flex-grow: 1;
     margin-bottom: 0 !important;
