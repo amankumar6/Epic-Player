@@ -72,7 +72,7 @@ window.addEventListener('load', () => {
     } else {
         setTimeout(() => {
             loader.style.display = 'none';
-        }, 000);
+        }, 3000);
     }
     loadSong(songList[songIndex]);
 });
