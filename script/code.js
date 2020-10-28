@@ -118,7 +118,7 @@ musiclist.innerHTML = (songList.map(function (song, songIndex) {
                 ${songIndex+1}.
             </h3>
             <div class="img_container_list col-1">
-				<img src="./src/image/${song.name}.jpg">
+				<img src="./src/image/${song.album}.jpg">
 			</div>
 			<h1 class="col-3 offset-1 offset-md-0" id="title_list">${song.name}</h1>
             <h2 class="col-4 col-md-3" id="artist_list">${song.artist}</h2>
@@ -253,7 +253,7 @@ const loadSong = (songList) => {
     artist.title = songList.artist;
     music.src = "src/music/" + songList.name + ".mp3";
     //music.src = songList.src;
-    img.src = "src/image/" + songList.name + ".jpg";
+    img.src = "src/image/" + songList.album + ".jpg";
     music.volume = (volumeSlider.value) / 100;
 };
 

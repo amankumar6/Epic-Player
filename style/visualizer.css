@@ -1,11 +1,2 @@
-.visualizer_main {
-    width: max-content;
-    margin: auto;
-}
-
-.visualizer {
-    position: fixed;
-    left: 2.5rem; 
-    bottom: 10vh;
-    z-index: -1;
-}
+.visualizer_main{width:max-content;margin:auto}
+.visualizer{position:fixed;left:2.5rem;bottom:10vh;z-index:-1}

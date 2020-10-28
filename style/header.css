@@ -1,98 +1,18 @@
-.header {
-    background-color: rgb(40, 40, 40);
-    font-size: 3rem;
-    padding: 1.2rem 1rem;
-    text-transform: uppercase;
-    text-transform: uppercase;
-    word-spacing: 0.5rem;
+.header{background-color:#282828;font-size:3rem;padding:1.2rem 1rem;text-transform:uppercase;text-transform:uppercase;word-spacing:.5rem}
+.header .header-icon{width:4.5rem;height:4.5rem;border-radius:50%;background-color:#1db954;color:#000;font-size:2.4rem;padding-left:.4rem;display:flex;justify-content:center;align-items:center;transition:color .3s ease;margin-right:1rem}
+.header .header-icon{cursor:pointer}
+.header a{color:#1db954;text-decoration:none}
+.header a:hover{color:#1db954;text-decoration:none}
+.search_box{background-color:#fff;border-radius:1.7rem;padding-left:.7rem;width:max-content}
+#search_icon{color:#000;font-size:1.7rem;margin-right:.4rem;filter:drop-shadow(0 1.2rem 3rem .5rem rgba(0, 0, 0, .4));cursor:inherit}
+#search_input{width:20rem;outline:0;padding:.5rem .4rem .5rem .5rem;font-size:1.7rem;border-radius:0 1.7rem 1.7rem 0;border:none}
+#search_input::-webkit-search-cancel-button{-webkit-appearance:none;height:1em;width:1em;border-radius:50em;background:url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%;background-size:contain;opacity:0}
+#search_input::-webkit-search-cancel-button:hover{cursor:pointer}
+#search_input:focus::-webkit-search-cancel-button{opacity:.3}
+@media all and (max-width:576px){
+.header{padding:1.5rem 1rem}
+.header .title{margin-bottom:1rem}
 }
-
-.header .header-icon {
-    width: 4.5rem;
-    height: 4.5rem;
-    border-radius: 50%;
-    background-color: #1DB954;
-    color: black;
-    font-size: 2.4rem;
-    padding-left: 0.4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: color 300ms ease;
-    margin-right: 1rem;
-}
-
-.header .header-icon {
-    cursor: pointer;
-}
-
-.header a {
-    color: #1DB954;
-    text-decoration: none;
-}
-
-.header a:hover {
-    color: #1DB954;
-    text-decoration: none;
-}
-
-.search_box {
-    background-color: white;
-    border-radius: 1.7rem;
-    padding-left: 0.7rem;
-    width: max-content;
-}
-
-#search_icon {
-    color: black;
-    font-size: 1.7rem;
-    margin-right: 0.4rem;
-    filter: drop-shadow(0 1.2rem 3rem 0.5rem rgba(0, 0, 0, 0.4));
-    cursor: inherit;
-}
-
-#search_input {
-    width: 20rem;
-    outline: none;
-    padding: 0.5rem 0.4rem 0.5rem 0.5rem;
-    font-size: 1.7rem;
-    border-radius: 0 1.7rem 1.7rem 0;
-    border: none;
-}
-
-#search_input::-webkit-search-cancel-button {
-    -webkit-appearance: none;
-    height: 1em;
-    width: 1em;
-    border-radius: 50em;
-    background: url("https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg") no-repeat 50% 50%;
-    background-size: contain;
-    opacity: 0;
-}
-
-#search_input::-webkit-search-cancel-button:hover {
-    cursor: pointer;
-}
-
-#search_input:focus::-webkit-search-cancel-button {
-    opacity: .3;
-}
-
-@media all and (max-width: 576px) {
-    .header {
-        padding: 1.5rem 1rem;
-    }
-
-    .header .title {
-        margin-bottom: 1rem;
-    }
-}
-
-@media all and (max-width: 479px) {
-    .header {
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-    }
+@media all and (max-width:479px){
+.header{position:absolute;top:0;right:0;left:0}
 }
