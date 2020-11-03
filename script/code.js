@@ -78,13 +78,13 @@ window.addEventListener('load', () => {
 });
 
 if (screen.width >= 480 || screen.height >= 480) {
-    window.addEventListener('keydown', function (e) {
+    window.addEventListener('keydown', (e) => {
         if (e.keyCode == 32 && e.target == document.body) {
             e.preventDefault();
         }
     });
 
-    document.body.onkeyup = function (e) {
+    document.body.onkeyup = (e) => {
         if (e.keyCode == 32) {
             if (isPlay) {
                 event.stopPropagation();
@@ -165,7 +165,7 @@ searchinput.addEventListener('input', (e) => {
 });
 
 for (let i = 0; i < musiclistitem.length; i++) {
-    musiclistitem[i].addEventListener("click", function () {
+    musiclistitem[i].addEventListener("click", () => {
         remove_all_active_list();
         loadSong(songList[i]);
         playmusic(i);
@@ -334,7 +334,7 @@ progress_div.addEventListener('click', (event) => {
     music.currentTime = move_progress;
 });
 
-progress_div.addEventListener("wheel", function (e) {
+progress_div.addEventListener("wheel", (e) => {
     let dir = Math.sign(e.deltaY);
     if (dir < 0) {
         music.currentTime += 5;
@@ -363,7 +363,7 @@ volumeSlider.addEventListener('change', () => {
     volumecheck();
 });
 
-volumeSlider.addEventListener('keyup', function (e) {
+volumeSlider.addEventListener('keyup', (e) => {
     event.stopPropagation();
     if (e.keyCode == 77) {
         MforMute();
@@ -411,7 +411,7 @@ volume.addEventListener('click', () => {
 
 volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
 
-volumeSlider.oninput = function () {
+volumeSlider.oninput = () => {
     volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
 }
 
