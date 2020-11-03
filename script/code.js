@@ -145,12 +145,22 @@ function search() {
             musiclist.style.display = "block";
             noresult.style.display = "none";
         } else {
-            musiclistitem[i].style.display = "none";
-            count++;
-            if (count == musiclistitem.length) {
-                musiclist.style.display = "none";
-                document.querySelector('.no_result_txt').innerText = "\"" + searchinput.value + "\"";
-                noresult.style.display = "grid";
+            search_result = musiclistitem[i].getElementsByTagName("h2")[0];
+            txtValue = search_result.textContent || search_result.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                musiclistitem[i].style.display = "";
+                musiclist.style.display = "block";
+                noresult.style.display = "none";
+            }
+            
+            else{
+                musiclistitem[i].style.display = "none";
+                count++;
+                if (count == musiclistitem.length) {
+                    musiclist.style.display = "none";
+                    document.querySelector('.no_result_txt').innerText = "\"" + searchinput.value + "\"";
+                    noresult.style.display = "grid";
+                }
             }
         }
     };
