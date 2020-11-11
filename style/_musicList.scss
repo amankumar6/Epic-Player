@@ -1,0 +1,82 @@
+.music_list {
+    background-color: transparent;
+    color: $white;
+    overflow-y: auto;
+    flex-grow: 1;
+    margin-bottom: 0 !important;
+
+    .music_list_item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-bottom: .01rem solid $white;
+        cursor: pointer;
+
+        &:hover:not(.active_music) {
+            color: $theme;
+            background-color: rgba(0, 0, 0, .4)
+        }
+
+        #song_index {
+            font-size: 1.7rem !important
+        }
+
+        .img_container_list img {
+            @include hiwi(5rem, 5rem);
+            border-radius: 50%;
+            object-fit: cover
+        }
+
+        #title_list {
+            @include uppercase();
+            font-size: 1.7rem !important;
+            font-weight: 500
+        }
+
+        #artist_list {
+            text-transform: capitalize;
+            letter-spacing: .1rem;
+            font-size: 1.7rem !important
+        }
+    }
+
+    &::-webkit-scrollbar {
+        width: 1rem
+    }
+
+    &::-webkit-scrollbar-track {
+        background: 0 0
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $theme;
+        border-radius: 1rem
+    }
+}
+
+.active_music {
+    color: $black;
+    background-color: $theme;
+}
+
+.no_result {
+    display: none;
+    place-items: center;
+    flex-grow: 1;
+    background-color: $black;
+
+    .text-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .fas {
+            font-size: 9rem
+        }
+
+        div {
+            font-size: 2.2rem;
+            margin-left: 1rem
+        }
+    }
+}

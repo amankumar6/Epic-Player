@@ -1,0 +1,95 @@
+.music_container {
+    background-color: $themebg;
+    @include hiwi(7.5rem, 100vw);
+}
+
+.img_container {
+    @include hiwi(6rem, 6rem);
+    border-radius: .5rem
+}
+
+img {
+    @include hiwi(100%, 100%);
+    object-fit: cover;
+    border-radius: .5rem
+}
+
+.music_name {
+    margin: 2rem 1rem 0 1rem;
+
+    #title {
+        @include uppercase();
+        color: $white;
+        font-size: 1.7rem;
+        font-weight: 500;
+        text-shadow: 0 .3rem .5rem rgba(0, 0, 0, .3);
+    }
+
+    #artist {
+        color: $white3;
+        text-transform: capitalize;
+        letter-spacing: .1rem;
+        font-size: 1.4rem;
+        margin-bottom: 4rem;
+        font-weight: 300;
+        max-width: 22rem;
+    }
+}
+
+@media all and (max-width:1230px) {
+    .music_name #artist {
+        max-width: 17rem
+    }
+}
+
+@media all and (max-width:1140px) {
+    .music_name {
+        #title {
+            max-width: 15rem
+        }
+
+        #artist {
+            max-width: 13rem
+        }
+    }
+}
+
+@media all and (max-width:1040px) {
+    .music_name #title {
+        max-width: 13rem
+    }
+}
+
+@media all and (max-width:970px) {
+    .music_name {
+        #title {
+            max-width: 11rem
+        }
+
+        #artist {
+            max-width: 9rem
+        }
+    }
+}
+
+@media all and (max-width:880px) {
+    .music_name {
+        #title {
+            max-width: 9rem
+        }
+
+        #artist {
+            max-width: 7rem
+        }
+    }
+}
+
+@media all and (max-width:765px) {
+    .music_name {
+        display: none
+    }
+
+    .music_container {
+        padding: 1rem 0
+    }
+}
