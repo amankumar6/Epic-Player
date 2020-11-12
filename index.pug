@@ -1,0 +1,80 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(name="description" content="Epic place to listen Music")
+        meta(name="author" content="Aman Kumar")
+
+        link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.14.0/css/all.css")
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap")
+        link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous")
+
+        script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous")
+        script(src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous")
+        script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous")
+
+        link(rel="stylesheet" href="style/main.css")
+        link(rel="icon" href="src/icon.png" type="image/x-icon")
+        title Epic Player
+        
+    body
+        noscript You need to enable JavaScript to run this app.
+
+        #loading
+
+        .visualizer_main
+            canvas.visualizer#cnv1
+
+        .header.d-flex.flex-sm-row.justify-content-sm-between.align-items-sm-center.flex-column.justify-content-between.align-items-center
+            .title.d-flex.flex-row.align-items-center
+                i.fas.fa-play.header-icon.d-flex.justify-content-center.align-items-center(title="Epic Player")
+                a(href="#") Epic Player
+        
+            .search_box.d-flex.justify-content-center.align-items-center
+                i.far.fa-search#search_icon
+                input(type="search" placeholder="Search")#search_input
+        
+        .compatibility.text-white.text-center.d-none.justify-content-center.align-items-center
+
+        ul.music_list
+
+        .no_result
+            .text-info
+                i.fas.fa-info-circle
+                div Sorry, we could'nt find any results matching
+                    p.no_result_txt
+
+        .music_container.d-flex.align-items-center
+            .music_img.col-2.col-md-3.d-flex.justify-content-md-start.align-items-center.justify-content-center.text-truncate
+                .img_container
+                    img(alt="Image").music_img_change
+                .music_name
+                    h2#title.text-truncate
+                    h3#artist.text-truncate
+
+            .all_controls.col-7.col-md-6.d-flex.flex-column
+                .music_controls.d-flex.justify-content-between.align-items-center
+                    i.far.fa-random#shuffle(title="Shuffle: On")
+                    i.fas.fa-backward#prev(title="Previous")
+                    i.fas.fa-play.main_button.d-flex.justify-content-center.align-items-center#play(title="Play")
+                    i.fas.fa-forward#next(title="Next")
+                    i.far.fa-repeat#repeat(title="Repeat")
+
+                .progress_duration_meter.col-12.d-flex.justify-content-between
+                    .current_time 0:00
+                    .progress_div
+                        .progress_bar
+                    .total_duration 3:16
+
+            .volume_control.col-3.col-md-2.offset-md-1.d-flex.justify-content-center.align-items-center
+                i.fas.fa-volume-up#volume(title="Mute")
+                input.volume_slider(type="range" min="0" max="100" value="100")
+            
+            audio(crossorigin="anonymous")
+
+    script(type="text/javascript" src="script/songList.js")
+    script(type="text/javascript" src="script/code.js")
