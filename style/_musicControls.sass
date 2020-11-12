@@ -1,0 +1,123 @@
+.all_controls 
+    width: 50rem
+
+
+.music_controls 
+    width: 25rem
+    margin: 0 auto
+
+    .main_button 
+        @include hiwi(4rem, 4rem)
+        border-radius: 50%
+        border: 2px solid$white
+        color: $white2
+        font-size: 1.4rem
+        transition: all .4s ease
+
+        &:hover 
+            background-color: $white2
+            color: #111 !important
+            box-shadow: 0 1rem 2rem .2rem rgba(0, 0, 0, .4)
+        
+    
+
+
+
+.fa,
+.far,
+.fas:not(.header-icon):not(.fa-info-circle) 
+    color: $white
+    font-size: 1.6rem
+    cursor: pointer
+    filter: drop-shadow(0 1.2rem 3rem .5rem rgba(0, 0, 0, .4))
+    transition: all .2s ease
+
+
+.fa:hover,
+.far:hover:not(.active_icon),
+.fas:hover:not(.header-icon):not(.fa-info-circle) 
+    color: $white3
+
+
+.active_icon 
+    color: $theme
+
+
+.progress_duration_meter 
+    font-size: 1.2rem
+    color: $white
+    margin-top: .5rem
+
+
+.progress_div 
+    margin: .7rem
+    @include hiwi(0.5rem, 90%)
+    background-color: $white3
+    border-radius: 5rem
+    position: relative
+    transition: width .1s linear
+    -moz-transition: width .1s linear
+    -o-transition: width .1s linear
+    -webkit-transition: width .1s linear
+    cursor: pointer
+    -webkit-animation: none
+    appearance: none
+
+
+.progress_bar 
+    position: absolute
+    top: 0
+    left: 0
+    @include hiwi(0.5rem, 0)
+    background-color: $theme
+    border-radius: 5rem
+    transition: width .1s linear
+    -moz-transition: width .1s linear
+    -o-transition: width .1s linear
+    -webkit-transition: width .1s linear
+    cursor: pointer
+    -webkit-animation: none
+    appearance: none
+
+
+.volume_control 
+    width: 16rem
+
+    .fas 
+        width: 2rem
+        margin-right: 1rem
+    
+
+
+.volume_slider 
+    background-color: $themebg
+    cursor: pointer
+    -webkit-appearance: none
+    appearance: none
+    @include hiwi(0.5rem, 100%)
+    outline: 0
+    border-radius: 1rem
+
+    &::-moz-range-track 
+        -webkit-appearance: none
+        appearance: none
+        @include hiwi(0.5rem, 100%)
+        outline: 0
+        border-radius: .5rem
+    
+
+    &::-webkit-slider-thumb 
+        -webkit-appearance: none
+        appearance: none
+        @include hiwi(1.3rem, 1.3rem)
+        background: $theme
+        border-radius: 50%
+    
+
+    &::-moz-range-thumb 
+        -webkit-appearance: none
+        appearance: none
+        @include hiwi(1.3rem, 1.3rem)
+        background: $theme
+        border-radius: 50%
+    

@@ -1,0 +1,60 @@
+
+$theme: #1db954
+$themebg: #282828
+$white: #fff
+$black : #000
+$white2:#f6f6f6
+$white3:#cccaca
+$font: Roboto, sans-serif
+
+@mixin uppercase() 
+    text-transform: uppercase
+    letter-spacing: .1rem
+    word-spacing: .2rem
+
+
+@mixin hiwi($height,$width) 
+    height: $height
+    width: $width
+
+
+* 
+    margin: 0
+    padding: 0
+    box-sizing: border-box
+
+
+html 
+    font-size: 62.5%
+    overflow: hidden
+
+
+body 
+    background-color: $black
+    display: flex
+    flex-direction: column
+    height: 100vh
+    font-family: $font !important
+
+
+#loading 
+    position: fixed
+    @include hiwi(100vh, 100%)
+    background: $white url(https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/6d391369321565.5b7d0d570e829.gif) no-repeat center center
+    z-index: 1
+
+
+.compatibility 
+    flex-grow: 1
+    letter-spacing: .1rem
+    font-size: 2.3rem !important
+    p .rotate_device 
+        width: 2.5rem
+    
+
+
+@import './header'
+@import './musicContainer'
+@import './musicControls'
+@import './musicList'
+@import './visualizer'

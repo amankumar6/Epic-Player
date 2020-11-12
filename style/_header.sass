@@ -1,0 +1,84 @@
+.header 
+    background-color: $themebg
+    font-size: 3rem
+    padding: 1.2rem 1rem
+    text-transform: uppercase
+    word-spacing: .5rem
+
+    .header-icon 
+        @include hiwi(4.5rem, 4.5rem)
+        border-radius: 50%
+        background-color: $theme
+        color: $black
+        font-size: 2.4rem
+        padding-left: .4rem
+        transition: color .3s ease
+        margin-right: 1rem
+        cursor: pointer
+    
+
+    a 
+        color: $theme
+        text-decoration: none
+
+        &:hover 
+            color: $theme
+            text-decoration: none
+        
+    
+
+
+.search_box 
+    background-color: $white
+    border-radius: 1.7rem
+    padding-left: .7rem
+    width: max-content
+
+
+#search_icon 
+    color: $black
+    font-size: 1.7rem
+    margin-right: .4rem
+    filter: drop-shadow(0 1.2rem 3rem .5rem rgba(0, 0, 0, .4))
+    cursor: inherit
+
+
+#search_input 
+    width: 20rem
+    outline: 0
+    padding: .5rem .4rem .5rem .5rem
+    font-size: 1.7rem
+    border-radius: 0 1.7rem 1.7rem 0
+    border: none
+
+    &::-webkit-search-cancel-button 
+        -webkit-appearance: none
+        @include hiwi(1em, 1em)
+        border-radius: 50em
+        background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%
+        background-size: contain
+        opacity: 0
+        cursor: pointer
+    
+
+    &:focus::-webkit-search-cancel-button 
+        opacity: .3
+    
+
+
+@media all and (max-width:576px) 
+    .header 
+        padding: 1.5rem 1rem
+        .title 
+            margin-bottom: 1rem
+        
+    
+
+
+@media all and (max-width:479px) 
+    .header 
+        position: absolute
+        top: 0
+        right: 0
+        left: 0
+    
