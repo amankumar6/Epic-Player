@@ -1,3 +1,5 @@
+import songList from "./songList.js";
+
 const loader = document.getElementById("loading"),
     headericon = document.querySelector('.header-icon'),
     searchinput = document.getElementById("search_input"),
