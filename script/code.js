@@ -69,47 +69,24 @@ if (screen.width < 480 && screen.height >= 480) {
 window.addEventListener('load', () => {
     let after_loadtime = new Date().getTime();
     let page_loadtime = (after_loadtime - before_loadtime) / 1000;
-    if (page_loadtime >= 3) {
-        loader.style.display = 'none';
-    } else {
+    (page_loadtime >= 3) ? loader.style.display = 'none':
         setTimeout(() => {
             loader.style.display = 'none';
         }, 3000);
-    }
     loadSong(songList[songIndex]);
 });
 
 if (screen.width >= 480 || screen.height >= 480) {
     window.addEventListener('keydown', (e) => {
-        if (e.keyCode == 32 && e.target == document.body) {
-            e.preventDefault();
-        }
+        (e.keyCode == 32 && e.target == document.body) ? e.preventDefault(): null;
     });
 
     document.body.onkeyup = (e) => {
         if (e.keyCode == 32) {
-            if (isPlay) {
-                event.stopPropagation();
-                pausemusic();
-            } else {
-                event.stopPropagation();
-                playmusic(songIndex);
-            }
-        } else if (e.keyCode == 39) {
-            if (isPlay) {
-                music.currentTime += 5;
-            } else {
-                music.currentTime += 5;
-            }
-        } else if (e.keyCode == 37) {
-            if (isPlay) {
-                music.currentTime -= 5;
-            } else {
-                music.currentTime -= 5;
-            }
-        } else if (e.keyCode == 77) {
-            MforMute();
+            event.stopPropagation();
+            isPlay ? pausemusic() : playmusic(songIndex);
         }
+        e.keyCode == 39 ? music.currentTime += 5 : e.keyCode == 37 ? music.currentTime -= 5 : e.keyCode == 77 ? MforMute() : null;
     };
 }
 
@@ -165,7 +142,6 @@ function search() {
                 }
             }
         }
-
     })
     event.stopPropagation();
 }
@@ -311,18 +287,7 @@ music.addEventListener("timeupdate", () => {
     let position = music.currentTime / music.duration;
     progress.style.width = position * 100 + "%";
     convertTime(Math.round(music.currentTime));
-    if (music.ended && !repeatCheck && !shuffleCheck) {
-        nextSong();
-    }
-    if (music.ended && repeatCheck && shuffleCheck) {
-        playmusic(songIndex);
-    }
-    if (music.ended && repeatCheck && !shuffleCheck) {
-        playmusic(songIndex);
-    }
-    if (music.ended && !repeatCheck && shuffleCheck) {
-        shuffleSong();
-    }
+    (music.ended && !repeatCheck && !shuffleCheck) ? nextSong(): (music.ended && !repeatCheck && shuffleCheck) ? shuffleSong() : (music.ended && repeatCheck && !shuffleCheck) ? playmusic(songIndex) : (music.ended && repeatCheck && shuffleCheck) ? playmusic(songIndex) : null;
 });
 
 function convertTime(seconds) {
@@ -337,9 +302,7 @@ function totalTime(seconds) {
     let min = Math.floor(seconds / 60);
     let sec = seconds % 60;
     sec = sec < 10 ? "0" + sec : sec;
-    if (music.duration) {
-        duration.textContent = min + ":" + sec;
-    }
+    music.duration ? duration.textContent = min + ":" + sec : null;
 };
 
 progress_div.addEventListener('click', (event) => {
@@ -349,25 +312,12 @@ progress_div.addEventListener('click', (event) => {
 
 progress_div.addEventListener("wheel", (e) => {
     let dir = Math.sign(e.deltaY);
-    if (dir < 0) {
-        music.currentTime += 5;
-    }
-    if (dir > 0) {
-        music.currentTime -= 5;
-    }
+    dir < 0 ? music.currentTime += 5 : music.currentTime -= 5;
 });
 
 function volumecheck() {
     volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
-    if (music.volume > 0.45) {
-        volumeup();
-    }
-    if (music.volume == 0) {
-        volumedown();
-    }
-    if (music.volume <= 0.45 && music.volume > 0) {
-        volumelow();
-    }
+    (music.volume > 0.45) ? volumeup(): (music.volume <= 0.45 && music.volume > 0) ? volumelow() : volumedown();
 };
 
 function volumeChange() {
@@ -386,9 +336,8 @@ volumeSlider.addEventListener('mousemove', () => {
 
 volumeSlider.addEventListener('keyup', (e) => {
     event.stopPropagation();
-    if (e.keyCode == 77) {
-        MforMute();
-    }
+    e.keyCode == 77 ? MforMute() : null;
+
 });
 
 function MforMute() {
