@@ -265,7 +265,7 @@ function loadSong(songList) {
     artist.textContent = songList.artist;
     artist.title = songList.artist;
     music.src = "src/music/" + songList.name + ".mp3";
-    //music.src = songList.src;
+    // music.src = songList.src;
     img.src = "src/image/" + songList.album + ".jpg";
     music.volume = (volumeSlider.value) / 100;
 };
@@ -370,10 +370,18 @@ function volumecheck() {
     }
 };
 
-volumeSlider.addEventListener('change', () => {
+function volumeChange() {
     music.volume = (volumeSlider.value) / 100;
     tempslidervalue = (volumeSlider.value) / 100;
     volumecheck();
+}
+
+volumeSlider.addEventListener('change', () => {
+    volumeChange();
+});
+
+volumeSlider.addEventListener('mousemove', () => {
+    volumeChange();
 });
 
 volumeSlider.addEventListener('keyup', (e) => {
