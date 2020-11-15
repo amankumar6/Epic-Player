@@ -113,7 +113,7 @@ if (screen.width >= 480 || screen.height >= 480) {
     };
 }
 
-musiclist.innerHTML = (songList.map(function (song, songIndex) {
+musiclist.innerHTML = (songList.map((song, songIndex) => {
     return `
         <li class="music_list_item" songIndex="${songIndex}">
             <h3 id="song_index" class="col-1 offset-md-1">
@@ -136,36 +136,37 @@ searchinput.addEventListener('keyup', () => {
 });
 
 function search() {
-    let txtValue;
-    let count = 0;
-    let filter = searchinput.value.toUpperCase();
-    for (let i = 0; i < musiclistitem.length; i++) {
-        search_result = musiclistitem[i].getElementsByTagName("h1")[0];
-        txtValue = search_result.textContent || search_result.innerText;
+    let txtValue,
+        count = 0,
+        search_result = 0,
+        filter = searchinput.value.toUpperCase();
+
+    musiclistitem.forEach((element) => {
+        search_result = element.getElementsByTagName("h1")[0];
+        txtValue = search_result.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            musiclistitem[i].style.display = "";
+            element.style.display = "";
             musiclist.style.display = "block";
             noresult.style.display = "none";
         } else {
-            search_result = musiclistitem[i].getElementsByTagName("h2")[0];
-            txtValue = search_result.textContent || search_result.innerText;
+            search_result = element.getElementsByTagName("h2")[0];
+            txtValue = search_result.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                musiclistitem[i].style.display = "";
+                element.style.display = "";
                 musiclist.style.display = "block";
                 noresult.style.display = "none";
-            }
-            
-            else{
-                musiclistitem[i].style.display = "none";
+            } else {
+                element.style.display = "none";
                 count++;
                 if (count == musiclistitem.length) {
                     musiclist.style.display = "none";
-                    document.querySelector('.no_result_txt').innerText = "\"" + searchinput.value + "\"";
+                    document.querySelector('.no_result_txt').innerText = '"' + searchinput.value + "\"";
                     noresult.style.display = "grid";
                 }
             }
         }
-    };
+
+    })
     event.stopPropagation();
 }
 
@@ -176,22 +177,22 @@ searchinput.addEventListener('input', (e) => {
     }
 });
 
-for (let i = 0; i < musiclistitem.length; i++) {
-    musiclistitem[i].addEventListener("click", () => {
+musiclistitem.forEach((element, index) => {
+    element.addEventListener("click", () => {
         remove_all_active_list();
-        loadSong(songList[i]);
-        playmusic(i);
-        musiclistitem[i].classList.add("active_music");
-        songIndex = i;
+        loadSong(songList[index]);
+        playmusic(index);
+        musiclistitem[index].classList.add("active_music");
+        songIndex = index;
         searchinput.value = null;
         search();
-    });
-};
+    })
+})
 
 function remove_all_active_list() {
-    for (let i = 0; i < musiclistitem.length; i++) {
-        musiclistitem[i].classList.remove("active_music");
-    };
+    musiclistitem.forEach((element) => {
+        element.classList.remove("active_music");
+    })
 };
 
 repeat.addEventListener('click', () => {
@@ -232,7 +233,7 @@ function shuffleSong() {
     lastRandom = songIndex;
 }
 
-const playmusic = (e) => {
+function playmusic(e) {
     remove_all_active_list();
     audioctx.resume();
     musiclistitem[e].classList.add("active_music");
@@ -242,7 +243,7 @@ const playmusic = (e) => {
     play.title = "Pause";
 };
 
-const pausemusic = () => {
+function pausemusic() {
     isPlay = false;
     music.pause();
     play.classList.replace('fa-pause', 'fa-play');
@@ -259,7 +260,7 @@ headericon.addEventListener('click', () => {
     }
 });
 
-const loadSong = (songList) => {
+function loadSong(songList) {
     title.textContent = songList.name;
     artist.textContent = songList.artist;
     artist.title = songList.artist;
@@ -269,7 +270,7 @@ const loadSong = (songList) => {
     music.volume = (volumeSlider.value) / 100;
 };
 
-const prevSong = () => {
+function prevSong() {
     if (shuffleCheck) {
         shuffleSong();
     } else {
@@ -286,7 +287,7 @@ const prevSong = () => {
     }
 };
 
-const nextSong = () => {
+function nextSong() {
     if (shuffleCheck) {
         shuffleSong();
     } else {
@@ -382,7 +383,7 @@ volumeSlider.addEventListener('keyup', (e) => {
     }
 });
 
-const MforMute = () => {
+function MforMute() {
     if (music.volume != 0) {
         volumedown();
         volumecheck();
@@ -392,7 +393,7 @@ const MforMute = () => {
     }
 }
 
-const volumedown = () => {
+function volumedown() {
     ismute = true;
     volume.classList.replace('fa-volume-down', 'fa-volume-mute');
     volume.classList.replace('fa-volume-up', 'fa-volume-mute');
@@ -401,13 +402,13 @@ const volumedown = () => {
     volume.title = "Unmute";
 };
 
-const volumelow = () => {
+function volumelow() {
     volume.classList.replace('fa-volume-mute', 'fa-volume-down');
     volume.classList.replace('fa-volume-up', 'fa-volume-down');
     volume.title = "Mute";
 };
 
-const volumeup = () => {
+function volumeup() {
     ismute = false;
     volume.classList.replace('fa-volume-down', 'fa-volume-up');
     volume.classList.replace('fa-volume-mute', 'fa-volume-up');
