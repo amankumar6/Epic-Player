@@ -29,6 +29,12 @@ const songList = [{
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1603902467/songs/Bloom_khqvp1.mp3",
     },
     {
+        name: "Body Back",
+        artist: "Gryffin ft. Maia Wright",
+        album: "Gravity",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606485213/songs/Body_Back_zzkyun.mp3",
+    },
+    {
         name: "Boyfriend",
         artist: "Justin Bieber",
         album: "Belive",
