@@ -11,6 +11,12 @@ const songList = [{
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602525882/songs/Alone_th1k4z.mp3",
     },
     {
+        name: "Do You Mean",
+        artist: "The Chainsmokers ft. Ty Dolla $ign, bülow",
+        album: "World War Joy",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606502080/songs/DoYouMean.mp3",
+    },
+    {
         name: "Be Kind",
         artist: "Marshmello & Halsey",
         album: "Be Kind",
@@ -311,6 +317,12 @@ const songList = [{
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602699835/songs/Sick_Boy_elangh.mp4",
     },
     {
+        name: "So Close",
+        artist: "NOTD, Felix Jaehn",
+        album: "So Close",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606502078/songs/SoClose.mp3",
+    },
+    {
         name: "Sorry",
         artist: "Justin Bieber",
         album: "Purpose",
@@ -347,10 +359,16 @@ const songList = [{
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602526066/songs/The_Monster_gefhc6.mp3",
     },
     {
-        name: "The Weeknd Blinding Lights",
+        name: "The Reaper",
+        artist: "The Chainsmokers ft. Amy Shark",
+        album: "World War Joy",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606502059/songs/TheReaper.mp3",
+    },
+    {
+        name: "Blinding Lights",
         artist: "The Weeknd",
         album: "After Hours",
-        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602699845/songs/The_Weeknd_Blinding_Lights_uu3btg.mp3",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602699845/songs/Blinding%20Lights.mp3",
     },
     {
         name: "This Feeling",
@@ -369,6 +387,12 @@ const songList = [{
         artist: "Imagine Dragons",
         album: "Evolve",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602699706/songs/Walking_The_Wire_x5e1ok.mp3",
+    },
+    {
+        name: "We Don't Talk Anymore",
+        artist: "Charlie Puth feat. Selena Gomez",
+        album: "Nine Track Mind",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606502079/songs/WeDontTalkAnymore.mp3",
     },
     {
         name: "Whatever It Takes",

@@ -67,12 +67,7 @@ if (screen.width < 480 && screen.height >= 480) {
 }
 
 window.addEventListener('load', () => {
-    let after_loadtime = new Date().getTime();
-    let page_loadtime = (after_loadtime - before_loadtime) / 1000;
-    (page_loadtime >= 3) ? loader.style.display = 'none':
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 3000);
+    loader.style.display = 'none';
     loadSong(songList[songIndex]);
 });
 
