@@ -36,7 +36,6 @@ let context, audioctx, analyser, oscillator, freqArr, barHeight, source, WIDTH, 
     songIndex = 0,
     volumeSlider = document.querySelector('.volume_slider'),
     tempslidervalue = volumeSlider.value,
-    before_loadtime = new Date().getTime(),
     minValue = 1,
     lastRandom = 0,
     repeatCheck = false,
@@ -47,11 +46,7 @@ if (screen.width < 480 && screen.height < 480) {
     compatibility.classList.replace('d-none', 'd-flex');
     canvas.classList.add('d-none');
     musiccontainer.classList.replace('d-flex', 'd-none');
-    compatibility.innerHTML = ` 
-        <p>
-            Sorry Your Device is not Epic to use Epic Player.
-        </p>
-    `
+    compatibility.innerHTML = `<p>Sorry Your Device is not Epic to use Epic Player.</p>`
 }
 
 if (screen.width < 480 && screen.height >= 480) {
@@ -81,7 +76,7 @@ if (screen.width >= 480 || screen.height >= 480) {
             event.stopPropagation();
             isPlay ? pausemusic() : playmusic(songIndex);
         }
-        e.keyCode == 39 ? music.currentTime += 5 : e.keyCode == 37 ? music.currentTime -= 5 : e.keyCode == 77 ? MforMute() : null;
+        e.keyCode == 39 ? music.currentTime += 5 : e.keyCode == 37 ? music.currentTime -= 5 : e.keyCode == 77 ? MforMute() : '';
     };
 }
 
@@ -90,9 +85,7 @@ songList.sort((a, b) => (a.name > b.name ? 1 : -1))
 musiclist.innerHTML = (songList.map((song, songIndex) => {
     return `
         <li class="music_list_item" songIndex="${songIndex}">
-            <h3 id="song_index" class="col-1 offset-md-1">
-                ${songIndex+1}.
-            </h3>
+            <h3 id="song_index" class="col-1 offset-md-1">${songIndex+1}.</h3>
             <div class="img_container_list col-1">
 				<img src="./src/image/${song.album}.jpg">
 			</div>
@@ -105,9 +98,7 @@ musiclist.innerHTML = (songList.map((song, songIndex) => {
 
 const musiclistitem = document.querySelectorAll(".music_list_item");
 
-searchinput.addEventListener('keyup', () => {
-    search();
-});
+searchinput.addEventListener('keyup', search);
 
 function search() {
     let txtValue,
@@ -163,9 +154,7 @@ musiclistitem.forEach((element, index) => {
 })
 
 function remove_all_active_list() {
-    musiclistitem.forEach((element) => {
-        element.classList.remove("active_music");
-    })
+    musiclistitem.forEach((element) => element.classList.remove("active_music"))
 };
 
 repeat.addEventListener('click', () => {
@@ -227,11 +216,7 @@ play.addEventListener('click', () => {
     isPlay ? pausemusic() : playmusic(songIndex);
 });
 
-headericon.addEventListener('click', () => {
-    if (!isPlay) {
-        playmusic(songIndex);
-    }
-});
+headericon.addEventListener('click', () => (!isPlay) ? playmusic(songIndex) : '');
 
 function loadSong(songList) {
     title.textContent = songList.name;
@@ -241,6 +226,11 @@ function loadSong(songList) {
     // music.src = songList.src;
     img.src = "src/image/" + songList.album + ".jpg";
     music.volume = (volumeSlider.value) / 100;
+    musiclistitem[songIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest"
+    });
 };
 
 function prevSong() {
@@ -250,11 +240,6 @@ function prevSong() {
         songIndex = (songIndex - 1 + songList.length) % songList.length;
         remove_all_active_list();
         musiclistitem[songIndex].classList.add("active_music");
-        musiclistitem[songIndex].scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-            inline: "nearest"
-        });
         loadSong(songList[songIndex]);
         playmusic(songIndex);
     }
@@ -267,11 +252,6 @@ function nextSong() {
         songIndex = (songIndex + 1) % songList.length;
         remove_all_active_list();
         musiclistitem[songIndex].classList.add("active_music");
-        musiclistitem[songIndex].scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-            inline: "nearest"
-        });
         loadSong(songList[songIndex]);
         playmusic(songIndex);
     }
@@ -284,7 +264,7 @@ music.addEventListener("timeupdate", () => {
     let position = music.currentTime / music.duration;
     progress.style.width = position * 100 + "%";
     convertTime(Math.round(music.currentTime));
-    (music.ended && !repeatCheck && !shuffleCheck) ? nextSong(): (music.ended && !repeatCheck && shuffleCheck) ? shuffleSong() : (music.ended && repeatCheck && !shuffleCheck) ? playmusic(songIndex) : (music.ended && repeatCheck && shuffleCheck) ? playmusic(songIndex) : null;
+    (music.ended && !repeatCheck && !shuffleCheck) ? nextSong(): (music.ended && !repeatCheck && shuffleCheck) ? shuffleSong() : (music.ended && repeatCheck && !shuffleCheck) ? playmusic(songIndex) : (music.ended && repeatCheck && shuffleCheck) ? playmusic(songIndex) : '';
 });
 
 function convertTime(seconds) {
@@ -299,7 +279,7 @@ function totalTime(seconds) {
     let min = Math.floor(seconds / 60);
     let sec = seconds % 60;
     sec = sec < 10 ? "0" + sec : sec;
-    music.duration ? duration.textContent = min + ":" + sec : null;
+    music.duration ? duration.textContent = min + ":" + sec : '';
 };
 
 progress_div.addEventListener('click', (event) => {
@@ -307,10 +287,7 @@ progress_div.addEventListener('click', (event) => {
     music.currentTime = move_progress;
 });
 
-progress_div.addEventListener("wheel", (e) => {
-    let dir = Math.sign(e.deltaY);
-    dir < 0 ? music.currentTime += 5 : music.currentTime -= 5;
-});
+progress_div.addEventListener("wheel", (e) => Math.sign(e.deltaY) < 0 ? music.currentTime += 5 : music.currentTime -= 5);
 
 function volumecheck() {
     volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
@@ -323,18 +300,12 @@ function volumeChange() {
     volumecheck();
 }
 
-volumeSlider.addEventListener('change', () => {
-    volumeChange();
-});
-
-volumeSlider.addEventListener('mousemove', () => {
-    volumeChange();
-});
+volumeSlider.addEventListener('change', volumeChange);
+volumeSlider.addEventListener('mousemove', volumeChange);
 
 volumeSlider.addEventListener('keyup', (e) => {
     event.stopPropagation();
-    e.keyCode == 77 ? MforMute() : null;
-
+    e.keyCode == 77 ? MforMute() : '';
 });
 
 function MforMute() {
