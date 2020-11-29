@@ -400,6 +400,18 @@ const songList = [{
         album: "Evolve",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1602700132/songs/Whatever_It_Takes_xowo52.mp3",
     },
+    {
+        name: "Faded",
+        artist: "Alan Walker",
+        album: "Faded",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606677030/songs/Faded.mp3",
+    },
+    {
+        name: "Post Malone",
+        artist: "Sam Feldt feat. RANI",
+        album: "Post Malone",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606677026/songs/PostMalone.mp3",
+    },
 ];
 
 export default songList;

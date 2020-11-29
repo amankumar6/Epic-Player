@@ -85,6 +85,8 @@ if (screen.width >= 480 || screen.height >= 480) {
     };
 }
 
+songList.sort((a, b) => (a.name > b.name ? 1 : -1))
+
 musiclist.innerHTML = (songList.map((song, songIndex) => {
     return `
         <li class="music_list_item" songIndex="${songIndex}">
