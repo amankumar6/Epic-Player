@@ -412,6 +412,18 @@ const songList = [{
         album: "Post Malone",
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606677026/songs/PostMalone.mp3",
     },
+    {
+        name: "I Like Me Better",
+        artist: "Lauv",
+        album: "I met you when I was 18",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606976950/songs/ILikeMeBetter.mp3",
+    },
+    {
+        name: "Señorita",
+        artist: "Shawn Mendes, Camila Cabello",
+        album: "Señorita",
+        src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606976950/songs/Se%C3%B1orita.mp3",
+    },
 ];
 
 export default songList;
