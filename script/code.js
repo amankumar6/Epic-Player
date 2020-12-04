@@ -1,4 +1,5 @@
 import songList from "./songList.js";
+songList.sort((a, b) => (a.name > b.name ? 1 : -1))
 
 const loader = document.getElementById("loading"),
     headericon = document.querySelector('.header-icon'),
@@ -41,6 +42,11 @@ let context, audioctx, analyser, oscillator, freqArr, barHeight, source, WIDTH, 
     repeatCheck = false,
     shuffleCheck = false;
 
+function displayLoader() {
+    loader.style.display = 'none';
+    loadSong(songList[songIndex]);
+}
+
 if (screen.width < 480 && screen.height < 480) {
     musiclist.classList.add('d-none');
     compatibility.classList.replace('d-none', 'd-flex');
@@ -61,11 +67,6 @@ if (screen.width < 480 && screen.height >= 480) {
     `
 }
 
-window.addEventListener('load', () => {
-    loader.style.display = 'none';
-    loadSong(songList[songIndex]);
-});
-
 if (screen.width >= 480 || screen.height >= 480) {
     window.addEventListener('keydown', (e) => {
         (e.keyCode == 32 && e.target == document.body) ? e.preventDefault(): null;
@@ -79,8 +80,6 @@ if (screen.width >= 480 || screen.height >= 480) {
         e.keyCode == 39 ? music.currentTime += 5 : e.keyCode == 37 ? music.currentTime -= 5 : e.keyCode == 77 ? MforMute() : '';
     };
 }
-
-songList.sort((a, b) => (a.name > b.name ? 1 : -1))
 
 musiclist.innerHTML = (songList.map((song, songIndex) => {
     return `
@@ -97,8 +96,6 @@ musiclist.innerHTML = (songList.map((song, songIndex) => {
 }).join(""));
 
 const musiclistitem = document.querySelectorAll(".music_list_item");
-
-searchinput.addEventListener('keyup', search);
 
 function search() {
     let txtValue,
@@ -134,30 +131,11 @@ function search() {
     event.stopPropagation();
 }
 
-searchinput.addEventListener('input', (e) => {
-    if (!e.inputType && searchinput.value === '') {
-        searchinput.value = null;
-        search();
-    }
-});
-
-musiclistitem.forEach((element, index) => {
-    element.addEventListener("click", () => {
-        remove_all_active_list();
-        loadSong(songList[index]);
-        playmusic(index);
-        musiclistitem[index].classList.add("active_music");
-        songIndex = index;
-        searchinput.value = null;
-        search();
-    })
-})
-
 function remove_all_active_list() {
     musiclistitem.forEach((element) => element.classList.remove("active_music"))
-};
+}
 
-repeat.addEventListener('click', () => {
+function repeatEvent() {
     if (repeatCheck) {
         repeat.classList.replace('fa-repeat-1-alt', 'fa-repeat');
         repeat.classList.remove('active_icon');
@@ -166,9 +144,9 @@ repeat.addEventListener('click', () => {
         repeat.classList.add('active_icon');
     }
     repeatCheck = !repeatCheck;
-})
+}
 
-shuffle.addEventListener('click', () => {
+function shuffleEvent() {
     if (shuffleCheck) {
         shuffle.classList.remove('active_icon');
         shuffle.title = "Shuffle: On"
@@ -177,7 +155,7 @@ shuffle.addEventListener('click', () => {
         shuffle.title = "Shuffle: Off"
     }
     shuffleCheck = !shuffleCheck;
-});
+}
 
 function shuffleSong() {
     songIndex = Math.floor(Math.random() * ((songList.length - 1) - minValue + 1)) + minValue;
@@ -203,20 +181,14 @@ function playmusic(e) {
     music.play();
     play.classList.replace('fa-play', 'fa-pause');
     play.title = "Pause";
-};
+}
 
 function pausemusic() {
     isPlay = false;
     music.pause();
     play.classList.replace('fa-pause', 'fa-play');
     play.title = "Play";
-};
-
-play.addEventListener('click', () => {
-    isPlay ? pausemusic() : playmusic(songIndex);
-});
-
-headericon.addEventListener('click', () => (!isPlay) ? playmusic(songIndex) : '');
+}
 
 function loadSong(songList) {
     title.textContent = songList.name;
@@ -231,7 +203,7 @@ function loadSong(songList) {
         block: "nearest",
         inline: "nearest"
     });
-};
+}
 
 function prevSong() {
     if (shuffleCheck) {
@@ -243,7 +215,7 @@ function prevSong() {
         loadSong(songList[songIndex]);
         playmusic(songIndex);
     }
-};
+}
 
 function nextSong() {
     if (shuffleCheck) {
@@ -255,17 +227,14 @@ function nextSong() {
         loadSong(songList[songIndex]);
         playmusic(songIndex);
     }
-};
+}
 
-prev.addEventListener('click', prevSong);
-next.addEventListener('click', nextSong);
-
-music.addEventListener("timeupdate", () => {
+function timeUpdate() {
     let position = music.currentTime / music.duration;
     progress.style.width = position * 100 + "%";
     convertTime(Math.round(music.currentTime));
     (music.ended && !repeatCheck && !shuffleCheck) ? nextSong(): (music.ended && !repeatCheck && shuffleCheck) ? shuffleSong() : (music.ended && repeatCheck && !shuffleCheck) ? playmusic(songIndex) : (music.ended && repeatCheck && shuffleCheck) ? playmusic(songIndex) : '';
-});
+}
 
 function convertTime(seconds) {
     let min = Math.floor(seconds / 60);
@@ -273,48 +242,38 @@ function convertTime(seconds) {
     sec = sec < 10 ? "0" + sec : sec;
     currentTime.textContent = min + ":" + sec;
     totalTime(Math.round(music.duration));
-};
+}
 
 function totalTime(seconds) {
     let min = Math.floor(seconds / 60);
     let sec = seconds % 60;
     sec = sec < 10 ? "0" + sec : sec;
     music.duration ? duration.textContent = min + ":" + sec : '';
-};
+}
 
-progress_div.addEventListener('click', (event) => {
-    let move_progress = (event.offsetX / event.srcElement.clientWidth) * music.duration;
+function progressBar(e) {
+    let move_progress = (e.offsetX / e.srcElement.clientWidth) * music.duration;
     music.currentTime = move_progress;
-});
+}
 
-progress_div.addEventListener("wheel", (e) => Math.sign(e.deltaY) < 0 ? music.currentTime += 5 : music.currentTime -= 5);
-
-function volumecheck() {
+function volumeCheck() {
     volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
     (music.volume > 0.45) ? volumeup(): (music.volume <= 0.45 && music.volume > 0) ? volumelow() : volumedown();
-};
+}
 
 function volumeChange() {
     music.volume = (volumeSlider.value) / 100;
     tempslidervalue = (volumeSlider.value) / 100;
-    volumecheck();
+    volumeCheck();
 }
-
-volumeSlider.addEventListener('change', volumeChange);
-volumeSlider.addEventListener('mousemove', volumeChange);
-
-volumeSlider.addEventListener('keyup', (e) => {
-    event.stopPropagation();
-    e.keyCode == 77 ? MforMute() : '';
-});
 
 function MforMute() {
     if (music.volume != 0) {
         volumedown();
-        volumecheck();
+        volumeCheck();
     } else if (music.volume == 0) {
         volumeup();
-        volumecheck();
+        volumeCheck();
     }
 }
 
@@ -325,13 +284,13 @@ function volumedown() {
     music.volume = 0;
     volumeSlider.value = 0;
     volume.title = "Unmute";
-};
+}
 
 function volumelow() {
     volume.classList.replace('fa-volume-mute', 'fa-volume-down');
     volume.classList.replace('fa-volume-up', 'fa-volume-down');
     volume.title = "Mute";
-};
+}
 
 function volumeup() {
     ismute = false;
@@ -340,12 +299,7 @@ function volumeup() {
     volumeSlider.value = tempslidervalue * 100;
     music.volume = (volumeSlider.value) / 100;
     volume.title = "Mute";
-};
-
-volume.addEventListener('click', () => {
-    ismute ? volumeup() : volumedown();
-    volumecheck();
-});
+}
 
 volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
 
@@ -409,3 +363,53 @@ function draw() {
     }
     window.requestAnimationFrame(draw);
 }
+
+// all EventListener
+
+window.addEventListener('load', displayLoader);
+
+searchinput.addEventListener('keyup', search);
+searchinput.addEventListener('input', (e) => {
+    if (!e.inputType && searchinput.value === '') {
+        searchinput.value = null;
+        search();
+    }
+});
+
+musiclistitem.forEach((element, index) => {
+    element.addEventListener("click", () => {
+        remove_all_active_list();
+        loadSong(songList[index]);
+        playmusic(index);
+        musiclistitem[index].classList.add("active_music");
+        songIndex = index;
+        searchinput.value = null;
+        search();
+    })
+})
+
+repeat.addEventListener('click', repeatEvent)
+shuffle.addEventListener('click', shuffleEvent);
+
+play.addEventListener('click', () => isPlay ? pausemusic() : playmusic(songIndex));
+prev.addEventListener('click', prevSong);
+next.addEventListener('click', nextSong);
+
+headericon.addEventListener('click', () => (!isPlay) && playmusic(songIndex));
+
+music.addEventListener("timeupdate", timeUpdate);
+
+progress_div.addEventListener('click', progressBar);
+progress_div.addEventListener("wheel", (e) => Math.sign(e.deltaY) < 0 ? music.currentTime += 5 : music.currentTime -= 5);
+
+volumeSlider.addEventListener('change', volumeChange);
+volumeSlider.addEventListener('mousemove', volumeChange);
+volumeSlider.addEventListener('keyup', (e) => {
+    event.stopPropagation();
+    e.keyCode == 77 ? MforMute() : '';
+});
+
+volume.addEventListener('click', () => {
+    ismute ? volumeup() : volumedown();
+    volumeCheck();
+});
