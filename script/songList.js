@@ -425,5 +425,3 @@ const songList = [{
         src: "https://res.cloudinary.com/dbvthtwhc/video/upload/v1606976950/songs/Se%C3%B1orita.mp3",
     },
 ];
-
-export default songList;
