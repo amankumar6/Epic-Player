@@ -1,6 +1,6 @@
 # 𝓔𝓹𝓲𝓬-𝓟𝓵𝓪𝔂𝓮𝓻
 
-[![Alt Text](epic-player.gif)](http://epicplayer.ml)
+[![Alt Text](epic-player.gif)](http://epicplayer.cf)
 
 Epic Player is a music player with Epic Playlist.
 
