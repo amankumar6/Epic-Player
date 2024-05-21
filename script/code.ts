@@ -1,35 +1,46 @@
-const loader: any = document.getElementById('loading'),
-    headericon: any = document.querySelector('.header-icon'),
-    searchinput: any = document.getElementById('search_input'),
-    progress: any = document.querySelector('.progress_bar'),
-    currentTime: any = document.querySelector('.current_time'),
-    duration: any = document.querySelector('.total_duration'),
-    progress_div: any = document.querySelector('.progress_div'),
-    music: any = document.querySelector('audio'),
-    musiccontainer: any = document.querySelector('.music_container'),
-    prev: any = document.getElementById('prev'),
-    play: any = document.getElementById('play'),
-    next: any = document.getElementById('next'),
-    volume: any = document.getElementById('volume'),
-    title: any = document.getElementById('title'),
-    artist: any = document.getElementById('artist'),
-    img: any = document.querySelector('.music_img_change'),
-    musiclist: any = document.querySelector('.music_list'),
-    noresult: any = document.querySelector('.no_result'),
-    shuffle: any = document.getElementById('shuffle'),
-    repeat: any = document.getElementById('repeat'),
-    compatibility: any = document.querySelector('.compatibility'),
-    canvas: any = document.getElementById('cnv1'),
-    endpoint =
-        'https://res.cloudinary.com/dbvthtwhc/raw/upload/v1613398922/songList.json';
+type Song = {
+    name: string;
+    artist: string;
+    album: string;
+    src: string;
+};
+
+const elements = {
+    loader: document.getElementById("loading") as HTMLElement,
+    headerIcon: document.querySelector(".header-icon") as HTMLElement,
+    searchInput: document.getElementById("search_input") as any,
+    progress: document.querySelector(".progress_bar") as HTMLElement,
+    currentTime: document.querySelector(".current_time") as HTMLElement,
+    duration: document.querySelector(".total_duration") as HTMLElement,
+    progressDiv: document.querySelector(".progress_div") as HTMLElement,
+    music: document.querySelector("audio") as HTMLAudioElement,
+    musicContainer: document.querySelector(".music_container") as HTMLElement,
+    prev: document.getElementById("prev") as HTMLElement,
+    play: document.getElementById("play") as HTMLElement,
+    next: document.getElementById("next") as HTMLElement,
+    volume: document.getElementById("volume") as HTMLElement,
+    title: document.getElementById("title") as HTMLElement,
+    artist: document.getElementById("artist") as HTMLElement,
+    img: document.querySelector(".music_img_change") as HTMLImageElement,
+    musicList: document.querySelector(".music_list") as HTMLElement,
+    noResult: document.querySelector(".no_result") as HTMLElement,
+    shuffle: document.getElementById("shuffle") as HTMLElement,
+    repeat: document.getElementById("repeat") as HTMLElement,
+    compatibility: document.querySelector(".compatibility") as HTMLElement,
+    canvas: document.getElementById("cnv1") as HTMLCanvasElement,
+    volumeSlider: document.querySelector(".volume_slider") as HTMLInputElement,
+};
+
+const endpoint =
+    "https://res.cloudinary.com/dbvthtwhc/raw/upload/v1613398922/songList.json";
 
 let context: any,
-    audioctx: any,
-    analyser: any,
+    audioCtx: AudioContext,
+    analyser: AnalyserNode,
     oscillator,
-    freqArr: any,
-    barHeight: any,
-    source,
+    freqArr: Uint8Array,
+    barHeight: number,
+    source: MediaElementAudioSourceNode,
     WIDTH: number,
     HEIGHT: number,
     bigBars = 0,
@@ -40,102 +51,209 @@ let context: any,
     b = 255,
     x = 0,
     isPlay = false,
-    ismute = false,
+    isMute = false,
     songIndex = 0,
     volumeSlider: any = document.querySelector('.volume_slider'),
-    tempslidervalue = volumeSlider.value,
+    tempSliderValue = volumeSlider.value,
     minValue = 1,
     lastRandom = 0,
     repeatCheck = false,
     shuffleCheck = false;
 
+let songList: Song[] = [];
+
 async function documentReady() {
-    let response = await fetch(endpoint);
-    let songList = await response.json();
-    console.log(songList)
-    songList.sort((a, b) => (a.name > b.name ? 1 : -1));
-    loader.style.display = 'none';
+    await fetchSongList();
+    setupAudioContext();
+    loadInitialSong();
+    setupEventListeners();
+    handleDeviceCompatibility();
+    setupAudioVisualizer();
+}
 
-    musiclist.innerHTML = songList
-        .map((song, songIndex) => {
-            return `
-                <li class="music_list_item" songIndex="${songIndex}">
-                    <h3 id="song_index" class="col-1 offset-md-1">${songIndex + 1}.</h3>
+async function fetchSongList() {
+    try {
+        const response = await fetch(endpoint);
+        songList = await response.json();
+        songList.sort((a, b) => a.name.localeCompare(b.name));
+        elements.loader.style.display = "none";
+        renderSongList();
+    } catch (error) {
+        console.error("Failed to fetch song list:", error);
+    }
+}
+
+function renderSongList() {
+    elements.musicList.innerHTML = songList
+        .map(
+            (song, index) => `
+                <li class="music_list_item" data-song-index="${index}">
+                    <h3 class="col-1 offset-md-1">${index + 1}.</h3>
                     <div class="img_container_list col-1">
-                        <img src="./src/image/${song.album}.jpg">
+                    <img src="./src/image/${song.album}.jpg">
                     </div>
-                    <h1 class="col-3 offset-1 offset-md-0" id="title_list">${song.name
-                }</h1>
-                    <h2 class="col-4 col-md-3" id="artist_list">${song.artist}</h2>
-                    <h3 class="col-2 text-truncate" title="${song.album}">${song.album
-                }</h3>
+                    <h1 class="col-3 offset-1 offset-md-0">${song.name}</h1>
+                    <h2 class="col-4 col-md-3">${song.artist}</h2>
+                    <h3 class="col-2 text-truncate" title="${song.album}">${song.album}</h3>
                 </li>
-            `;
-        }).join('');
+            `
+        )
+        .join("");
+}
 
-    const musiclistitem = document.querySelectorAll('.music_list_item');
+function setupAudioContext() {
+    context = elements.canvas.getContext('2d');
+    audioCtx = new AudioContext();
+    WIDTH = window.innerWidth - 50;
+    elements.canvas.width = WIDTH;
+    HEIGHT = 500;
+    elements.canvas.height = 500;
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = SAMPLES;
+    oscillator = audioCtx.createOscillator();
+    oscillator.connect(audioCtx.destination);
+    source = audioCtx.createMediaElementSource(elements.music);
+    source.connect(analyser);
+    source.connect(audioCtx.destination);
+    freqArr = new Uint8Array(analyser.frequencyBinCount);
+    barHeight = HEIGHT;
+    window.requestAnimationFrame(setupAudioVisualizer);
+}
+
+function loadInitialSong() {
     loadSong(songList[songIndex]);
+}
 
-    // to check compatibility 
-    if (screen.width < 480 && screen.height < 480) {
-        musiclist.classList.add('d-none');
-        compatibility.classList.replace('d-none', 'd-flex');
-        canvas.classList.add('d-none');
-        musiccontainer.classList.replace('d-flex', 'd-none');
-        compatibility.innerHTML = `<p>Sorry Your Device is not Epic to use Epic Player.</p>`;
+function setupEventListeners() {
+    // Setup volume slider background
+    volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
+    
+    // Keyboard shortcuts
+    window.addEventListener("keydown", handleShortcutKeys);
+    
+    // Search events
+    elements.searchInput.addEventListener('keyup', handleSearch);
+    elements.searchInput.addEventListener('input', handleSearchInput);
+
+    // Music list item click events
+    document.querySelectorAll('.music_list_item').forEach((element, index) => {
+        element.addEventListener('click', () => {
+            handleMusicListItemClick(index);
+        });
+    });
+
+    // Repeat and shuffle button events
+    elements.repeat.addEventListener('click', toggleRepeat);
+    elements.shuffle.addEventListener('click', toggleShuffle);
+
+    // Play, prev, and next button events
+    elements.play.addEventListener('click', togglePlay);
+    elements.prev.addEventListener('click', prevSong);
+    elements.next.addEventListener('click', nextSong);
+    elements.headerIcon.addEventListener('click', playPauseHeaderIcon);
+
+    // Music progress and volume events
+    elements.music.addEventListener('timeupdate', updateProgress);
+    elements.progressDiv.addEventListener('click', setProgress);
+    elements.progressDiv.addEventListener('wheel', handleProgressWheel);
+    volumeSlider.addEventListener('change', handleVolumeChange);
+    volumeSlider.addEventListener('mousemove', handleVolumeChange);
+    volumeSlider.addEventListener('keyup', handleVolumeKeyUp);
+    volumeSlider.addEventListener('input', handleVolumeInput);
+    elements.volume.addEventListener('click', handleVolumeIconClick);
+}
+
+// Function to handle search input events
+function handleSearchInput(e) {
+    if (!e.inputType && elements.searchInput.value === '') {
+        elements.searchInput.value = null;
+        handleSearch();
     }
+}
 
-    if (screen.width < 480 && screen.height >= 480) {
-        musiclist.classList.add('d-none');
-        compatibility.classList.replace('d-none', 'd-flex');
-        canvas.classList.add('d-none');
-        musiccontainer.classList.replace('d-flex', 'd-none');
-        compatibility.innerHTML = `
-            <p>
-                <img src="src/screen_rotation-white-18dp.svg" alt="rotate" class="rotate_device"> Rotate you device and reload the page to use Epic Player.
-            </p>
-        `;
-    }
+// Function to handle music list item click events
+function handleMusicListItemClick(index) {
+    remove_all_active_list();
+    loadSong(songList[index]);
+    playMusic(index);
+    document.querySelectorAll('.music_list_item')[index].classList.add('active_music');
+    songIndex = index;
+    elements.searchInput.value = null;
+    handleSearch();
+}
 
-    // shortcut keys
+// Function to handle play/pause button click
+function togglePlay() {
+    isPlay ? pauseMusic() : playMusic(songIndex);
+}
+
+// Function to handle header icon click (play if paused)
+function playPauseHeaderIcon() {
+    !isPlay && playMusic(songIndex);
+}
+
+// Function to handle progress wheel event
+function handleProgressWheel(e) {
+    Math.sign(e.deltaY) < 0 ? (elements.music.currentTime += 5) : (elements.music.currentTime -= 5);
+}
+
+// Function to handle volume key up event
+function handleVolumeKeyUp(e) {
+    event.stopPropagation();
+    e.keyCode == 77 ? toggleMute() : '';
+}
+
+// Function to update volume slider background on input
+function handleVolumeInput() {
+    volumeSlider.style.background = 'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
+}
+
+// Function to handle volume icon click event
+function handleVolumeIconClick() {
+    isMute ? volumeUp() : volumeDown();
+    updateVolumeSliderBackground();
+}
+
+function handleShortcutKeys(event: KeyboardEvent) {
     if (screen.width >= 480 || screen.height >= 480) {
-        window.addEventListener('keydown', (e) => {
-            e.keyCode == 32 && e.target == document.body
-                ? e.preventDefault()
-                : null;
+        window.addEventListener("keydown", (e) => {
+            if (e.keyCode == 32 && e.target == document.body) {
+                e.preventDefault();
+            }
         });
 
         document.body.onkeyup = (e) => {
             if (e.keyCode == 32) {
                 event.stopPropagation();
-                isPlay ? pausemusic() : playmusic(songIndex);
+                isPlay ? pauseMusic() : playMusic(songIndex);
             }
-            e.keyCode == 39
-                ? (music.currentTime += 5)
-                : e.keyCode == 37
-                    ? (music.currentTime -= 5)
-                    : e.keyCode == 77
-                        ? MforMute()
-                        : '';
+            if (e.keyCode == 39) {
+                elements.music.currentTime += 5;
+            } else if (e.keyCode == 37) {
+                elements.music.currentTime -= 5;
+            } else if (e.keyCode == 77) {
+                toggleMute();
+            }
         };
     }
+}
 
-    // search bar
-    function search() {
-        let txtValue,
+function handleSearch() {
+    const musicListItem = document.querySelectorAll('.music_list_item');
+    let txtValue,
             count = 0,
             search_result: HTMLInputElement,
-            filter = searchinput.value.toUpperCase();
+            filter = elements.searchInput.value.toUpperCase();
 
-        musiclistitem.forEach((element: any) => {
+        musicListItem.forEach((element: any) => {
             search_result = element.getElementsByTagName(
                 'h1'
             )[0] as HTMLInputElement;
             txtValue = element.getElementsByTagName('h1')[0].innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 element.style.display = '';
-                musiclist.style.display = 'block';
-                noresult.style.display = 'none';
+                elements.musicList.style.display = 'block';
+                elements.noResult.style.display = 'none';
             } else {
                 search_result = element.getElementsByTagName(
                     'h2'
@@ -143,242 +261,275 @@ async function documentReady() {
                 txtValue = search_result.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     element.style.display = '';
-                    musiclist.style.display = 'block';
-                    noresult.style.display = 'none';
+                    elements.musicList.style.display = 'block';
+                    elements.noResult.style.display = 'none';
                 } else {
                     element.style.display = 'none';
                     count++;
-                    if (count == musiclistitem.length) {
-                        musiclist.style.display = 'none';
+                    if (count == musicListItem.length) {
+                        elements.musicList.style.display = 'none';
                         const noResultContent: any = document.querySelector(
                             '.no_result_txt'
                         );
                         noResultContent.innerText =
-                            '"' + searchinput.value + '"';
-                        noresult.style.display = 'grid';
+                            '"' + elements.searchInput.value + '"';
+                        elements.noResult.style.display = 'grid';
                     }
                 }
             }
         });
         event.stopPropagation();
-    }
+}
 
-    // removing all active songs
-    function remove_all_active_list() {
-        musiclistitem.forEach((element) =>
-            element.classList.remove('active_music')
-        );
-    }
+function remove_all_active_list() {
+    const musicListItem = document.querySelectorAll('.music_list_item');
+    musicListItem.forEach((e) =>
+        e.classList.remove('active_music')
+    );
+}
 
-    // repeat song
-    function repeatEvent() {
-        if (repeatCheck) {
-            repeat.classList.replace('fa-repeat-1-alt', 'fa-repeat');
-            repeat.classList.remove('active_icon');
-        } else {
-            repeat.classList.replace('fa-repeat', 'fa-repeat-1-alt');
-            repeat.classList.add('active_icon');
-        }
-        repeatCheck = !repeatCheck;
-    }
+function togglePlayPause() {
+    isPlay ? pauseMusic() : playMusic(songIndex);
+}
 
-    // shuffle song
-    function shuffleEvent() {
-        if (shuffleCheck) {
-            shuffle.classList.remove('active_icon');
-            shuffle.title = 'Shuffle: On';
-        } else {
-            shuffle.classList.add('active_icon');
-            shuffle.title = 'Shuffle: Off';
-        }
-        shuffleCheck = !shuffleCheck;
-    }
+function playMusic(index: number) {
+    const musicListItem = document.querySelectorAll('.music_list_item');
 
-    function shuffleSong() {
-        songIndex =
-            Math.floor(Math.random() * (songList.length - 1 - minValue + 1)) +
-            minValue;
-        while (lastRandom === songIndex) {
-            songIndex =
-                Math.floor(
-                    Math.random() * (songList.length - 1 - minValue + 1)
-                ) + minValue;
-        }
-        loadSong(songList[songIndex]);
-        playmusic(songIndex);
-        musiclistitem[songIndex].scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'nearest',
-        });
-        minValue = 0;
-        lastRandom = songIndex;
-    }
+    remove_all_active_list();
+    audioCtx.resume();
+    musicListItem[index].classList.add('active_music');
+    isPlay = true;
+    elements.music.play();
+    elements.play.classList.replace('fa-play', 'fa-pause');
+    elements.play.title = 'Pause';
+}
 
-    // play
-    function playmusic(e: any) {
+function pauseMusic() {
+    elements.music.pause();
+    elements.play.classList.replace("fa-pause", "fa-play");
+    elements.play.title = "Play";
+    isPlay = false;
+}
+
+function prevSong() {
+    const musicListItem = document.querySelectorAll('.music_list_item');
+    if (shuffleCheck) {
+        shuffleSong();
+    } else {
+        songIndex = (songIndex - 1 + songList.length) % songList.length;
         remove_all_active_list();
-        audioctx.resume();
-        musiclistitem[e].classList.add('active_music');
-        isPlay = true;
-        music.play();
-        play.classList.replace('fa-play', 'fa-pause');
-        play.title = 'Pause';
+        musicListItem[songIndex].classList.add('active_music');
+        loadSong(songList[songIndex]);
+        playMusic(songIndex);
     }
+}
 
-    // pause
-    function pausemusic() {
-        isPlay = false;
-        music.pause();
-        play.classList.replace('fa-pause', 'fa-play');
-        play.title = 'Play';
+function nextSong() {
+    const musicListItem = document.querySelectorAll('.music_list_item');
+    if (shuffleCheck) {
+        shuffleSong();
+    } else {
+        songIndex = (songIndex + 1) % songList.length;
+        remove_all_active_list();
+        musicListItem[songIndex].classList.add('active_music');
+        loadSong(songList[songIndex]);
+        playMusic(songIndex);
     }
+}
 
-    // to load a song 
-    function loadSong(songList: any) {
-        title.textContent = songList.name;
-        artist.textContent = songList.artist;
-        artist.title = songList.artist;
-        music.src = 'src/music/' + songList.name + '.mp3';
-        // music.src = songList.src;
-        img.src = 'src/image/' + songList.album + '.jpg';
-        music.volume = volumeSlider.value / 100;
-        musiclistitem[songIndex].scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'nearest',
-        });
+function handleSongClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const listItem = target.closest(".music_list_item");
+    if (listItem) {
+        const index = Number(listItem.getAttribute("data-song-index"));
+        playMusic(index);
+        songIndex = index;
     }
+}
 
-    // previous song
-    function prevSong() {
-        if (shuffleCheck) {
+function loadSong(song: Song) {
+    const musicListItem = document.querySelectorAll('.music_list_item');
+    elements.title.textContent = song.name;
+    elements.artist.textContent = song.artist;
+    elements.artist.title = song.artist;
+    elements.music.src = "src/music/" + song.name + ".mp3";
+    // elements.music.src = song.src;
+    elements.img.src = "src/image/" + song.album + ".jpg";
+    elements.music.volume = parseFloat(elements.volumeSlider.value) / 100;
+
+    musicListItem[songIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+    });
+}
+
+function updateProgress() {
+    const { currentTime, duration } = elements.music;
+    const progressPercent = (currentTime / duration) * 100;
+    elements.progress.style.width = `${progressPercent}%`;
+    elements.currentTime.textContent = formatTime(currentTime);
+    duration ? elements.duration.textContent = formatTime(duration) : '';
+
+    if (elements.music.ended) {
+        if (!repeatCheck && !shuffleCheck) {
+            nextSong();
+        } else if (!repeatCheck && shuffleCheck) {
             shuffleSong();
-        } else {
-            songIndex = (songIndex - 1 + songList.length) % songList.length;
-            remove_all_active_list();
-            musiclistitem[songIndex].classList.add('active_music');
-            loadSong(songList[songIndex]);
-            playmusic(songIndex);
+        } else if (repeatCheck) {
+            playMusic(songIndex);
         }
     }
+}
 
-    // next song 
-    function nextSong() {
-        if (shuffleCheck) {
-            shuffleSong();
-        } else {
-            songIndex = (songIndex + 1) % songList.length;
-            remove_all_active_list();
-            musiclistitem[songIndex].classList.add('active_music');
-            loadSong(songList[songIndex]);
-            playmusic(songIndex);
-        }
+function formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+}
+
+function setProgress(event: MouseEvent) {
+    const width = this.clientWidth;
+    const clickX = event.offsetX;
+    const duration = elements.music.duration;
+    elements.music.currentTime = (clickX / width) * duration;
+}
+
+// Handles changes in the volume slider
+function handleVolumeChange() {
+    const volume = parseFloat(elements.volumeSlider.value) / 100;
+    elements.music.volume = volume;
+    tempSliderValue = volume;
+    isMute = volume === 0;
+    updateVolumeSliderBackground();
+    updateVolumeIcon();
+}
+
+// Sets up the volume slider background based on the current value
+function updateVolumeSliderBackground() {
+    volumeSlider.style.background = 
+        `linear-gradient(90deg, #1DB954 ${volumeSlider.value}%, #ddd 0)`;
+}
+
+// Updates the volume icon based on the current volume level and mute state
+function updateVolumeIcon() {
+    if (isMute) {
+        elements.volume.classList.replace("fa-volume-up", "fa-volume-mute");
+    } else if (elements.music.volume > 0.45) {
+        elements.volume.classList.replace("fa-volume-mute", "fa-volume-up");
+        elements.volume.classList.replace("fa-volume-down", "fa-volume-up");
+    } else if (elements.music.volume > 0) {
+        elements.volume.classList.replace("fa-volume-mute", "fa-volume-down");
+        elements.volume.classList.replace("fa-volume-up", "fa-volume-down");
+    } else {
+        elements.volume.classList.replace("fa-volume-up", "fa-volume-mute");
+        elements.volume.classList.replace("fa-volume-down", "fa-volume-mute");
+    }
+}
+
+// Increases the volume and updates the UI
+function volumeUp() {
+    isMute = false;
+    elements.music.volume = tempSliderValue;
+    volumeSlider.value = tempSliderValue * 100;
+    updateVolumeSliderBackground();
+    updateVolumeIcon();
+    elements.volume.title = 'Mute';
+}
+
+// Sets the volume to a low level and updates the UI
+function volumeLow() {
+    elements.volume.title = 'Mute';
+    updateVolumeIcon();
+}
+
+// Mutes the volume and updates the UI
+function volumeDown() {
+    isMute = true;
+    elements.music.volume = 0;
+    volumeSlider.value = 0;
+    updateVolumeSliderBackground();
+    updateVolumeIcon();
+    elements.volume.title = 'Unmute';
+}
+
+// Toggles the mute state and updates the UI accordingly
+function toggleMute() {
+    if (elements.music.volume !== 0) {
+        volumeDown();
+    } else {
+        volumeUp();
+    }
+}
+
+function toggleShuffle(){
+    if (shuffleCheck) {
+        elements.shuffle.classList.remove('active_icon');
+        elements.shuffle.title = 'Shuffle: On';
+    } else {
+        elements.shuffle.classList.add('active_icon');
+        elements.shuffle.title = 'Shuffle: Off';
+    }
+    shuffleCheck = !shuffleCheck;
+}
+
+function shuffleSong() {
+    const musicListItem = document.querySelectorAll('.music_list_item');
+    songIndex =
+        Math.floor(Math.random() * (songList.length - 1 - minValue + 1)) +
+        minValue;
+    while (lastRandom === songIndex) {
+        songIndex =
+            Math.floor(
+                Math.random() * (songList.length - 1 - minValue + 1)
+            ) + minValue;
+    }
+    loadSong(songList[songIndex]);
+    playMusic(songIndex);
+    musicListItem[songIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+    });
+    minValue = 0;
+    lastRandom = songIndex;
+}
+
+function toggleRepeat() {
+    if (repeatCheck) {
+        elements.repeat.classList.replace('fa-repeat-1-alt', 'fa-repeat');
+        elements.repeat.classList.remove('active_icon');
+    } else {
+        elements.repeat.classList.replace('fa-repeat', 'fa-repeat-1-alt');
+        elements.repeat.classList.add('active_icon');
+    }
+    repeatCheck = !repeatCheck;
+}
+
+function handleDeviceCompatibility() {
+    if (window.screen.width < 480 && window.screen.height < 480) {
+        elements.musicList.classList.add('d-none');
+        elements.compatibility.classList.replace('d-none', 'd-flex');
+        elements.canvas.classList.add('d-none');
+        elements.musicContainer.classList.replace('d-flex', 'd-none');
+        elements.compatibility.innerHTML = `<p>Sorry Your Device is not Epic to use Epic Player.</p>`;
     }
 
-    // update song time
-    function timeUpdate() {
-        let position = music.currentTime / music.duration;
-        progress.style.width = position * 100 + '%';
-        convertTime(Math.round(music.currentTime));
-        music.ended && !repeatCheck && !shuffleCheck
-            ? nextSong()
-            : music.ended && !repeatCheck && shuffleCheck
-                ? shuffleSong()
-                : music.ended && repeatCheck && !shuffleCheck
-                    ? playmusic(songIndex)
-                    : music.ended && repeatCheck && shuffleCheck
-                        ? playmusic(songIndex)
-                        : '';
+    if (screen.width < 480 && screen.height >= 480) {
+        elements.musicList.classList.add('d-none');
+        elements.compatibility.classList.replace('d-none', 'd-flex');
+        elements.canvas.classList.add('d-none');
+        elements.musicContainer.classList.replace('d-flex', 'd-none');
+        elements.compatibility.innerHTML = `
+            <p>
+                <img src="src/screen_rotation-white-18dp.svg" alt="rotate" class="rotate_device"> Rotate you device and reload the page to use Epic Player.
+            </p>
+        `;
     }
+}
 
-    // convert time
-    function convertTime(seconds: number) {
-        let min = Math.floor(seconds / 60);
-        let sec: any = seconds % 60;
-        sec = sec < 10 ? '0' + sec : sec;
-        currentTime.textContent = min + ':' + sec;
-        totalTime(Math.round(music.duration));
-    }
-
-    // to calculate the total time of the song
-    function totalTime(seconds: any) {
-        let min = Math.floor(seconds / 60);
-        let sec: any = seconds % 60;
-        sec = sec < 10 ? '0' + sec : sec;
-        music.duration ? (duration.textContent = min + ':' + sec) : '';
-    }
-
-    // to animate progressBar
-    function progressBar(e: any) {
-        let move_progress =
-            (e.offsetX / e.srcElement.clientWidth) * music.duration;
-        music.currentTime = move_progress;
-    }
-
-    // to check the volume
-    function volumeCheck() {
-        volumeSlider.style.background =
-            'linear-gradient(90deg, #1DB954 ' +
-            volumeSlider.value +
-            '%, #ddd 0)';
-        music.volume > 0.45
-            ? volumeup()
-            : music.volume <= 0.45 && music.volume > 0
-                ? volumelow()
-                : volumedown();
-    }
-
-    // to change the volume
-    function volumeChange() {
-        music.volume = volumeSlider.value / 100;
-        tempslidervalue = volumeSlider.value / 100;
-        volumeCheck();
-    }
-
-    // shortcut to mute a song
-    function MforMute() {
-        if (music.volume != 0) {
-            volumedown();
-            volumeCheck();
-        } else if (music.volume == 0) {
-            volumeup();
-            volumeCheck();
-        }
-    }
-
-    // to change the volume button
-    function volumedown() {
-        ismute = true;
-        volume.classList.replace('fa-volume-down', 'fa-volume-mute');
-        volume.classList.replace('fa-volume-up', 'fa-volume-mute');
-        music.volume = 0;
-        volumeSlider.value = 0;
-        volume.title = 'Unmute';
-    }
-
-    function volumelow() {
-        volume.classList.replace('fa-volume-mute', 'fa-volume-down');
-        volume.classList.replace('fa-volume-up', 'fa-volume-down');
-        volume.title = 'Mute';
-    }
-
-    function volumeup() {
-        ismute = false;
-        volume.classList.replace('fa-volume-down', 'fa-volume-up');
-        volume.classList.replace('fa-volume-mute', 'fa-volume-up');
-        volumeSlider.value = tempslidervalue * 100;
-        music.volume = volumeSlider.value / 100;
-        volume.title = 'Mute';
-    }
-
-    // for volume slider
-    volumeSlider.style.background =
-        'linear-gradient(90deg, #1DB954 ' + volumeSlider.value + '%, #ddd 0)';
-
-    // for audion visualizer
-    function draw() {
-        if (!music.paused) {
+function setupAudioVisualizer() {
+    if (!elements.music.paused) {
             bigBars = 0;
             r = 0;
             g = 0;
@@ -417,85 +568,7 @@ async function documentReady() {
                 x = x + WIDTH / INTERVAL;
             }
         }
-        window.requestAnimationFrame(draw);
-    }
-
-    context = canvas.getContext('2d');
-    audioctx = new AudioContext();
-    WIDTH = window.innerWidth - 50;
-    canvas.width = WIDTH;
-    HEIGHT = 500;
-    canvas.height = 500;
-    analyser = audioctx.createAnalyser();
-    analyser.fftSize = SAMPLES;
-    oscillator = audioctx.createOscillator();
-    oscillator.connect(audioctx.destination);
-    source = audioctx.createMediaElementSource(music);
-    source.connect(analyser);
-    source.connect(audioctx.destination);
-    freqArr = new Uint8Array(analyser.frequencyBinCount);
-    barHeight = HEIGHT;
-    window.requestAnimationFrame(draw);
-
-    searchinput.addEventListener('keyup', search);
-    searchinput.addEventListener('input', (e: any) => {
-        if (!e.inputType && searchinput.value === '') {
-            searchinput.value = null;
-            search();
-        }
-    });
-
-    musiclistitem.forEach((element, index) => {
-        element.addEventListener('click', () => {
-            remove_all_active_list();
-            loadSong(songList[index]);
-            playmusic(index);
-            musiclistitem[index].classList.add('active_music');
-            songIndex = index;
-            searchinput.value = null;
-            search();
-        });
-    });
-
-    repeat.addEventListener('click', repeatEvent);
-    shuffle.addEventListener('click', shuffleEvent);
-
-    play.addEventListener('click', () =>
-        isPlay ? pausemusic() : playmusic(songIndex)
-    );
-    prev.addEventListener('click', prevSong);
-    next.addEventListener('click', nextSong);
-
-    headericon.addEventListener('click', () => !isPlay && playmusic(songIndex));
-
-    music.addEventListener('timeupdate', timeUpdate);
-
-    progress_div.addEventListener('click', progressBar);
-    progress_div.addEventListener('wheel', (e: any) =>
-        Math.sign(e.deltaY) < 0
-            ? (music.currentTime += 5)
-            : (music.currentTime -= 5)
-    );
-
-    volumeSlider.addEventListener('change', volumeChange);
-    volumeSlider.addEventListener('mousemove', volumeChange);
-    volumeSlider.addEventListener('keyup', (e: any) => {
-        event.stopPropagation();
-        e.keyCode == 77 ? MforMute() : '';
-    });
-    volumeSlider.addEventListener(
-        'input',
-        () =>
-        (volumeSlider.style.background =
-            'linear-gradient(90deg, #1DB954 ' +
-            volumeSlider.value +
-            '%, #ddd 0)')
-    );
-
-    volume.addEventListener('click', () => {
-        ismute ? volumeup() : volumedown();
-        volumeCheck();
-    });
+        window.requestAnimationFrame(setupAudioVisualizer);
 }
 
-window.addEventListener('load', documentReady);
+document.addEventListener("DOMContentLoaded", documentReady);
